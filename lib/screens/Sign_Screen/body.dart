@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:crm/screens/Home_Page/home.dart';
-import 'package:crm/screens/Sign_Screen/sign_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 
-class Body extends StatefulWidget with ChangeNotifier {
+class Body extends StatefulWidget {
+  Body({Key? key,}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -53,11 +52,12 @@ class _BodyState extends State<Body> {
     }
   }
 
+
   @override
   void initState() {
     super.initState();
-    // getLogin("", "").whenComplete(() {
-    //   setState(() {});
+    // getlogin("", "").whencomplete(() {
+    //   setstate(() {});
     // });
   }
 
@@ -91,12 +91,13 @@ class _BodyState extends State<Body> {
                     getLogin(_usernameController.text, _passwordController.text)
                         .whenComplete(() {
                       if (status == true) {
+                        Future.delayed(Duration(seconds: 1)).whenComplete(() {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
                           return HomePage(
                             token: tokencomponent,
                           );
-                        }));
+                        }));});
                       } else {
                         showDialog(
                             context: context,
@@ -141,7 +142,9 @@ class _BodyState extends State<Body> {
   }
 }
 
-class PasswordTextFormField extends StatelessWidget {
+bool obscuretext = true;
+
+class PasswordTextFormField extends StatefulWidget {
   const PasswordTextFormField({
     Key? key,
     required this.size,
@@ -153,32 +156,41 @@ class PasswordTextFormField extends StatelessWidget {
   final TextEditingController _passwordController;
 
   @override
+  State<PasswordTextFormField> createState() => _PasswordTextFormFieldState();
+}
+
+class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        width: size.width * 0.8,
+        width: widget.size.width * 0.8,
         decoration: BoxDecoration(
           color: kPrimaryLightColor,
           borderRadius: BorderRadius.circular(29),
         ),
         child: TextFormField(
-          controller: _passwordController,
+          controller: widget._passwordController,
           onSaved: (value) {
-            value = _passwordController.text;
+            value = widget._passwordController.text;
           },
-          obscureText: true,
+          obscureText: obscuretext,
           decoration: InputDecoration(
               hintText: "Şifre",
               icon: Icon(
                 Icons.lock,
                 color: kPrimaryColor,
               ),
-              suffixIcon: Icon(
+              suffixIcon: IconButton(onPressed: () {
+                setState(() {
+                  obscuretext = !obscuretext;
+                });
+              }, icon: Icon(
                 Icons.visibility,
                 color: kPrimaryColor,
-              ),
+              ),),
               border: InputBorder.none),
         ),
       ),

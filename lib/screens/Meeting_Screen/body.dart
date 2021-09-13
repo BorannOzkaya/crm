@@ -91,7 +91,7 @@ class _BodyState extends State<Body> {
                                     RandevuEkleKullanici()));
                       },
                       padding: EdgeInsets.only(left: 20, right: 20),
-                      color: Color(0xFF69d8b5),
+                      color: kPrimaryColor,
                       child: Text(
                         "Randevu Ekle",
                         style: TextStyle(

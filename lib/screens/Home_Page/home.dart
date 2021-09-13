@@ -1,4 +1,5 @@
 import 'package:crm/constants.dart';
+import 'package:crm/screens/Bayi_Screen/bayi.dart';
 import 'package:crm/screens/Companies_Screen/companies.dart';
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/%C3%9Clke_rapor_grafigi.dart';
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/genel_rapor_grafigi.dart';
@@ -84,16 +85,6 @@ class _HomePageState extends State<HomePage> {
                   Icon(Icons.apartment),
                   SizedBox(width: 10),
                   const Text('Ülkeler'),
-                ],
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.cases_outlined),
-                  SizedBox(width: 10),
-                  const Text('Bayi'),
                 ],
               ),
               onTap: () {},
@@ -241,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = UsersScreen();
+                        currentScreen = BayiScreen();
                         currentTab = 2;
                       });
                     },
@@ -249,11 +240,11 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.person_add,
+                          Icons.cases_rounded,
                           color: currentTab == 2 ? kPrimaryColor : Colors.grey,
                         ),
                         Text(
-                          "Kullanıcılar",
+                          "Bayiler",
                           style: TextStyle(
                               color: currentTab == 2
                                   ? kPrimaryColor

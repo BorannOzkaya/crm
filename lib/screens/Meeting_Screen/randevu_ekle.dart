@@ -167,9 +167,9 @@ class _RandevuEkleState extends State<RandevuEkle> {
                                                     firmalar![index].gsm),
                                                 SizedBox(height: 8),
                                                 Text(firmalar![index]
-                                                        .countryName! +
+                                                        .countryName +
                                                     "-" +
-                                                    firmalar![index].cityName!)
+                                                    firmalar![index].cityName)
                                               ],
                                             ),
                                           ),

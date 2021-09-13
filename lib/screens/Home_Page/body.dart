@@ -82,6 +82,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       });
     });
   }
+  
+@override
+void dispose() {
+  assert(() {
+    getCompanyCallList();
+    return true;
+  }());
+  super.dispose();
+}
+  
 
   List data = [
     {"text": "Olumlu Sonuçlanan Aramalar"},
@@ -105,15 +115,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20)),
-              child: Container(
-                color: kPrimaryLightColor,
-                height: size.height * 0.2,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 90, left: 15),
-                  child: Text(
-                    'Anasayfa',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15, left: 15),
+                child: Text(
+                  'Anasayfa',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

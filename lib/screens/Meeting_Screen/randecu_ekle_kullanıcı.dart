@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crm/screens/Companies_Screen/company_api.dart';
-import 'package:crm/screens/Users_screen/users_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
@@ -182,6 +181,7 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
             selectedIndex = firmalarDisplay[index].id;
             selected = true;
             print(selectedIndex);
+            FocusScope.of(context).unfocus();
           });
           // ignore: deprecated_member_use
           showDialog(
@@ -203,6 +203,11 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(45),
           child: Card(
+            //         shape: RoundedRectangleBorder(
+            // borderRadius: BorderRadius.only(
+            //   bottomRight: Radius.circular(10),
+            //   topRight: Radius.circular(10)),
+            // side: BorderSide(width: 5, color: Colors.blue)),
             color: kPrimaryLightColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(32, 20, 16, 16),

@@ -127,6 +127,7 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
             selectedIndex = statusCountDisplay[index].id;
             selected = true;
             print(selectedIndex);
+            FocusScope.of(context).unfocus();
           });
           showDialog(
               context: context,

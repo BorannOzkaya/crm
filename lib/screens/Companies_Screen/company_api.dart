@@ -69,8 +69,8 @@ class Firmalar {
   dynamic deletedDate;
   String? website;
   String username;
-  String? cityName;
-  String? countryName;
+  String cityName;
+  String countryName;
 
   factory Firmalar.fromJson(Map<String, dynamic> json) => Firmalar(
         id: json["id"],
@@ -86,8 +86,8 @@ class Firmalar {
         deletedDate: json["deleted_date"],
         website: json["website"],
         username: json["username"],
-        cityName: json["city_name"] == null ? null : "",
-        countryName: json["country_name"] == null ? null : "",
+        cityName: json["city_name"],
+        countryName: json["country_name"],
       );
 
   Map<String, dynamic> toJson() => {

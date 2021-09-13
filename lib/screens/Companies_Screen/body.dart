@@ -95,7 +95,7 @@ class _BodyState extends State<Body> {
                           _showMyDialog();
                         },
                         padding: EdgeInsets.only(left: 30, right: 30),
-                        color: Color(0xFF69d8b5),
+                        color: kPrimaryColor,
                         child: Text(
                           "Yeni Firma Ekle",
                           style: TextStyle(
@@ -144,9 +144,9 @@ class _BodyState extends State<Body> {
                                         SizedBox(height: 8),
                                         Text("+0 " + firmalar![index].gsm),
                                         SizedBox(height: 8),
-                                        Text(firmalar![index].countryName! +
-                                            "-" +
-                                            firmalar![index].cityName!)
+                                        Text(firmalar![index].countryName +
+                                            " - " +
+                                            firmalar![index].cityName.toString())
                                       ],
                                     ),
                                   ),
@@ -177,7 +177,15 @@ class _BodyState extends State<Body> {
         return SingleChildScrollView(
           child: AlertDialog(
             scrollable: true,
-            title: const Text('Firma Ekle'),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Firma Ekle'),
+                IconButton(onPressed: () {
+                  Navigator.pop(context);
+                }, icon: Icon(Icons.close))
+              ],
+            ),
             actions: <Widget>[
               TextFormField(
                 autofocus: true,
