@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
 import '../../constants.dart';
+import 'sign_screen.dart';
 
 class Body extends StatefulWidget {
   Body({
@@ -96,40 +97,60 @@ class _BodyState extends State<Body> {
               // ignore: deprecated_member_use
               child: FlatButton(
                   onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Yönlendiriliyor..."),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(Icons.close))
+                                ],
+                              ),
+                              content: Container(
+                                  height: 50,
+                                  width: 50,
+                                  child: Center(
+                                      child: CircularProgressIndicator())));
+                        });
                     getLogin(_usernameController.text, _passwordController.text)
                         .whenComplete(() {
                       if (status == true) {
-                        Future.delayed(Duration(seconds: 1)).whenComplete(() {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return HomePage(
-                              token: tokencomponent,
-                            );
-                          }));
-                        });
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return HomePage(
+                            token: tokencomponent,
+                          );
+                        }));
                       } else {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return FutureBuilder(
                                 future: Future.delayed(Duration(seconds: 1)),
-                                builder: (c, s) =>
-                                    s.connectionState == ConnectionState.done
-                                        ? AlertDialog(
-                                            title: Text("Başarısız"),
-                                            content: TextButton(
-                                                onPressed: () {
-                                                  // Navigator.push(context,
-                                                  //     MaterialPageRoute(builder:
-                                                  //         (BuildContext context) {
-                                                  //   return SignInScreen();
-                                                  // }));
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("OK")),
-                                          )
-                                        : Center(
-                                            child: CircularProgressIndicator()),
+                                builder: (c, s) => s.connectionState ==
+                                        ConnectionState.done
+                                    ? AlertDialog(
+                                        title: Text("Başarısız"),
+                                        content: TextButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder:
+                                                      (BuildContext context) {
+                                                return SignInScreen();
+                                              }));
+                                              //Navigator.pop(context);
+                                            },
+                                            child: Text("OK")),
+                                      )
+                                    : Center(
+                                        child: CircularProgressIndicator()),
                               );
                             });
                         setState(() {});
