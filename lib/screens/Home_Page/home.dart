@@ -4,9 +4,9 @@ import 'package:crm/screens/Companies_Screen/companies.dart';
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/%C3%9Clke_rapor_grafigi.dart';
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/genel_rapor_grafigi.dart';
 import 'package:crm/screens/Meeting_Screen/meeting_screen.dart';
+import 'package:crm/screens/Previous_interview/previous_interview.dart';
 import 'package:crm/screens/Profile_Screen/profile.dart';
 import 'package:crm/screens/Sign_Screen/sign_screen.dart';
-import 'package:crm/screens/Users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'body.dart';
 
@@ -97,7 +97,12 @@ class _HomePageState extends State<HomePage> {
                   const Text('Geçmiş Randevular'),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => GecmisRandevular()));
+              },
             ),
             ListTile(
               title: Row(

@@ -1,12 +1,8 @@
 import 'dart:convert';
 
 import 'package:crm/model/countries_api_model.dart';
-import 'package:crm/screens/Home_Page/status_count_api.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:http/http.dart' as http;
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../constants.dart';
 
@@ -77,7 +73,8 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
-                    Text("Ülke ismi giriniz")
+                    Text("Ülke ismi giriniz \nSeçmek için basılı tutun",
+                        textAlign: TextAlign.center)
                   ],
                 ),
               ),
