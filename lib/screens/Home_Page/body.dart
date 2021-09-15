@@ -82,16 +82,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       });
     });
   }
-  
-@override
-void dispose() {
-  assert(() {
-    getCompanyCallList();
-    return true;
-  }());
-  super.dispose();
-}
-  
+
+  @override
+  void dispose() {
+    assert(() {
+      getCompanyCallList();
+      return true;
+    }());
+    super.dispose();
+  }
 
   List data = [
     {"text": "Olumlu Sonuçlanan Aramalar"},

@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:crm/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'profile_update.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -9,6 +12,78 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  List<ProfileUpdate>? companyCall;
+  profileUpdate(int userId, int genderId, String name, String surname,
+      String userName, String gsm, String email) async {
+    var url = Uri.parse('https://crmsr.pen.com.tr/api/person/update');
+    final msg = jsonEncode({
+      "id": userId,
+      "gender_id": genderId,
+      "name": name,
+      "surname": surname,
+      "username": userName,
+      "gsm": gsm,
+      "email": email
+    });
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      var decode = jsonDecode(response.body);
+      // companyCall = profileDatumApiDatasFromJson(jsonEncode(decode["data"]!));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  String? name;
+  String? surname;
+  String? username;
+  String? gsm;
+  String? email;
+
+  List<ProfilePerson>? profilePerson;
+  getPerson(int userid) async {
+    var url = Uri.parse('https://crmsr.pen.com.tr/api/person/getlistbyid');
+    final msg = jsonEncode({"id": useridcomponent.toString()});
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      //print(response.body);
+      var decode = json.decode(response.body);
+      name = decode["data"][0]["name"].toString();
+      surname = decode["data"][0]["surname"].toString();
+      username = decode["data"][0]["username"].toString();
+      gsm = decode["data"][0]["gsm"].toString();
+      email = decode["data"][0]["email"].toString();
+      _nameController.text = name!;
+      _surnameController.text = surname!;
+      _usernameController.text = username!;
+      _gsmController.text = gsm!;
+      _emailController.text = email!;
+      // profilePerson =
+      //     profilePersonDatumApiDatasFromJson(jsonEncode(decode["data"]!));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPerson(useridcomponent);
+  }
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _surnameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _gsmController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+
   String dropdownValue = 'Erkek';
   @override
   Widget build(BuildContext context) {
@@ -33,7 +108,8 @@ class _BodyState extends State<Body> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              controller: _nameController,
+              obscureText: false,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Ad',
@@ -46,7 +122,8 @@ class _BodyState extends State<Body> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              controller: _surnameController,
+              obscureText: false,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Soyad',
@@ -59,7 +136,8 @@ class _BodyState extends State<Body> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              controller: _usernameController,
+              obscureText: false,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Kullanıcı Adı',
@@ -102,7 +180,8 @@ class _BodyState extends State<Body> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              controller: _gsmController,
+              obscureText: false,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'GSM',
@@ -115,7 +194,8 @@ class _BodyState extends State<Body> {
             ),
             SizedBox(height: 20),
             TextField(
-              obscureText: true,
+              controller: _emailController,
+              obscureText: false,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Email',
@@ -129,7 +209,16 @@ class _BodyState extends State<Body> {
                   borderRadius: BorderRadius.circular(5),
                   // ignore: deprecated_member_use
                   child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        profileUpdate(
+                            useridcomponent,
+                            gendercomponent,
+                            _nameController.text,
+                            _surnameController.text,
+                            _usernameController.text,
+                            _gsmController.text,
+                            _emailController.text);
+                      },
                       padding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 60),
                       color: kPrimaryColor,
@@ -140,7 +229,7 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 80),
           ],
         ),
       ),

@@ -8,7 +8,9 @@ import 'package:crypto/crypto.dart';
 import '../../constants.dart';
 
 class Body extends StatefulWidget {
-  Body({Key? key,}) : super(key: key);
+  Body({
+    Key? key,
+  }) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -24,6 +26,8 @@ class _BodyState extends State<Body> {
   bool status = false;
   String? token;
   String? message;
+  int? userid;
+  int? genderid;
 
   getLogin(String userName, String password) async {
     var headers = {
@@ -41,17 +45,21 @@ class _BodyState extends State<Body> {
       status = decode["status"];
       token = decode["data"]["token"];
       message = decode["message"];
+      userid = decode["data"]["id"];
+      genderid = decode["data"]["gender_id"];
       // user = decode["data"]["username"]!;
       // password = decode["data"]["password"]!;
       tokencomponent = token.toString();
+      gendercomponent = genderid!;
+      useridcomponent = userid!;
       // status = loginApiDatasFromJson(jsonEncode(decode["data"]));
       print(token);
       print(message);
+      print(userid);
     } else {
       print(response.reasonPhrase);
     }
   }
-
 
   @override
   void initState() {
@@ -92,12 +100,13 @@ class _BodyState extends State<Body> {
                         .whenComplete(() {
                       if (status == true) {
                         Future.delayed(Duration(seconds: 1)).whenComplete(() {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return HomePage(
-                            token: tokencomponent,
-                          );
-                        }));});
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return HomePage(
+                              token: tokencomponent,
+                            );
+                          }));
+                        });
                       } else {
                         showDialog(
                             context: context,
@@ -183,14 +192,17 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
                 Icons.lock,
                 color: kPrimaryColor,
               ),
-              suffixIcon: IconButton(onPressed: () {
-                setState(() {
-                  obscuretext = !obscuretext;
-                });
-              }, icon: Icon(
-                Icons.visibility,
-                color: kPrimaryColor,
-              ),),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obscuretext = !obscuretext;
+                  });
+                },
+                icon: Icon(
+                  Icons.visibility,
+                  color: kPrimaryColor,
+                ),
+              ),
               border: InputBorder.none),
         ),
       ),

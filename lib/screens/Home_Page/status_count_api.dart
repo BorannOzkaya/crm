@@ -46,8 +46,8 @@ class StatusDatum {
     required this.count,
   });
 
-  final int? statusId;
-  final int? count;
+  final int statusId;
+  final int count;
 
   factory StatusDatum.fromJson(Map<String, dynamic> json) => StatusDatum(
         statusId: json["status_id"],
