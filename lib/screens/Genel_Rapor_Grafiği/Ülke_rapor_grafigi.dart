@@ -117,50 +117,49 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
   bool selected = false;
   String? dateValue;
 
-  GestureDetector _listItem(index) {
-    return GestureDetector(
-        onLongPress: () {
-          setState(() {
-            selectedIndex = statusCountDisplay[index].id;
-            selected = true;
-            print(selectedIndex);
-            FocusScope.of(context).unfocus();
-          });
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    "${statusCountDisplay[index].countryName} ülkesi seçildi",
-                    textAlign: TextAlign.center,
-                  ),
-                  content: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("OK")),
-                );
-              });
-          // ignore: deprecated_member_use
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Card(
-            color: kPrimaryLightColor,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  _listItem(index) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(40),
+      child: Card(
+        shape: selected
+            ? new RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(40.0))
+            : new RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(40.0)),
+        color: kPrimaryLightColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     statusCountDisplay[index].countryName,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Checkbox(
+                          value: selected,
+                          onChanged: (value) {
+                            setState(() {
+                              selected = value!;
+                            });
+                          })
+                    ],
+                  ),
                 ],
               ),
-            ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
