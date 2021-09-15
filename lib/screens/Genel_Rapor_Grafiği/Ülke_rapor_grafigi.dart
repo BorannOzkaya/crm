@@ -147,6 +147,8 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                       new Checkbox(
                           value: selected,
                           onChanged: (value) {
+                            selectedIndex = statusCountDisplay[index].id;
+                            print(selectedIndex);
                             setState(() {
                               selected = value!;
                             });
