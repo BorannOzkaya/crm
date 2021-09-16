@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../constants.dart';
-import 'kullanıcı_sec.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
