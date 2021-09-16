@@ -117,7 +117,8 @@ class _BodyState extends State<Body> {
                                   height: 50,
                                   width: 50,
                                   child: Center(
-                                      child: CircularProgressIndicator())));
+                                      child: CircularProgressIndicator(
+                                          color: kPrimaryColor))));
                         });
                     getLogin(_usernameController.text, _passwordController.text)
                         .whenComplete(() {

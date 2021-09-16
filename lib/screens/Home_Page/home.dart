@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   );
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: PageStorage(
         child: currentScreen,
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Row(
                 children: [
-                  Icon(Icons.home),
+                  Icon(Icons.home_outlined),
                   SizedBox(width: 10),
                   const Text('Anasayfa'),
                 ],
@@ -82,17 +83,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Row(
                 children: [
-                  Icon(Icons.apartment),
-                  SizedBox(width: 10),
-                  const Text('Ülkeler'),
-                ],
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.replay),
+                  Icon(Icons.replay_outlined),
                   SizedBox(width: 10),
                   const Text('Geçmiş Randevular'),
                 ],
@@ -141,6 +132,16 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Row(
                 children: [
+                  Icon(Icons.account_tree_outlined),
+                  SizedBox(width: 10),
+                  const Text('Paketler'),
+                ],
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Row(
+                children: [
                   Icon(Icons.logout),
                   SizedBox(width: 10),
                   const Text('Çıkış Yap'),
@@ -152,6 +153,15 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => SignInScreen()));
               },
+            ),
+            SizedBox(height: size.height * 0.22),
+            ListTile(
+              title: Row(
+                children: [
+                  const Text('Version 1.0'),
+                ],
+              ),
+              onTap: () {},
             ),
           ],
         ),

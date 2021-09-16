@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crm/constants.dart';
 import 'package:crm/screens/Home_Page/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -92,13 +93,82 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     super.dispose();
   }
 
+//.l-bg-cherry {
+// 	background: linear-gradient(to right, 0xFF493240, 0xFFf09) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-blue-dark {
+// 	background: linear-gradient(to right, 0xFF373b44, 0xFF4286f4) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-green-dark {
+// 	background: linear-gradient(to right, 0xFF0a504a, 0xFF38ef7d) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-orange-dark {
+// 	background: linear-gradient(to right, 0xFFa86008, 0xFFffba56) !important;
+// 	color: #fff;
+// }
+//.l-bg-cyan {
+// 	background: linear-gradient(135deg, 0xFF289cf5, 0xFF84c0ec) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-green {
+// 	background: linear-gradient(135deg, 0xFF23bdb8 0%, 0xFF43e794 100%) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-orange {
+// 	background: linear-gradient(to right, 0xFFf9900e, 0xFFffba56) !important;
+// 	color: #fff;
+// }
+
+// .l-bg-cyan {
+// 	background: linear-gradient(135deg, 0xFF289cf5, 0xFF84c0ec) !important;
+// 	color: #fff;
+// }
+
   List data = [
-    {"text": "Olumlu Sonuçlanan Aramalar"},
-    {"text": "Olumsuz Sonuçlanan Aramalar"},
-    {"text": "Nötr Aramalar "},
-    {"text": "Aranmayan Aramalar"},
-    {"text": "Açılmayan Aramalar"},
-    {"text": "Dönülmeyen Aramalar"},
+    {
+      "text": "Olumlu Sonuçlanan Aramalar",
+      "color": Colors.green,
+      "backgroundcolor1": Color(0xFF373b44).withOpacity(0.9),
+      "backgroundcolor2": Color(0xFF4286f4).withOpacity(0.9)
+    },
+    {
+      "text": "Olumsuz Sonuçlanan Aramalar",
+      "color": Colors.red,
+      "backgroundcolor1": Color(0xFF493240).withOpacity(0.9),
+      "backgroundcolor2": Colors.pink[800]
+    },
+    {
+      "text": "Nötr Aramalar ",
+      "color": Colors.yellow,
+      "backgroundcolor1": Color(0xFFa86008).withOpacity(0.9),
+      "backgroundcolor2": Color(0xFFffba56).withOpacity(0.9)
+    },
+    {
+      "text": "Dönülmeyen Aramalar",
+      "color": Colors.blue,
+      "backgroundcolor1": Color(0xFF289cf5).withOpacity(0.9),
+      "backgroundcolor2": Color(0xFF84c0ec).withOpacity(0.9)
+    },
+    {
+      "text": "Açılmayan Aramalar",
+      "color": Colors.grey,
+      "backgroundcolor1": Color(0xFF0a504a).withOpacity(0.9),
+      "backgroundcolor2": Color(0xFF38ef7d).withOpacity(0.9)
+    },
+    {
+      "text": "Dönülmeyen Aramalar",
+      "color": Colors.blue,
+      "backgroundcolor1": Color(0xFF493240).withOpacity(0.9),
+      "backgroundcolor2": Color(0xFFf09123).withOpacity(0.9)
+    },
   ];
 
   @override
@@ -134,31 +204,60 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, crossAxisSpacing: 31),
                     itemBuilder: (context, index) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Text(
-                                data[index]["text"],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15),
-                              ),
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      data[index]["backgroundcolor1"],
+                                      data[index]["backgroundcolor2"]
+                                    ])),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: Text(
+                                    data[index]["text"],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(height: size.height * 0.03),
+                                Icon(
+                                  Icons.call,
+                                  color: data[index]["color"],
+                                ),
+                                SizedBox(height: size.height * 0.03),
+                                Text(
+                                  statusCount![index].count.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: size.height * 0.05),
-                            Text(
-                              statusCount![index].count.toString(),
-                              style:
-                                  TextStyle(color: kPrimaryColor, fontSize: 24),
-                            ),
-                          ],
+                          ),
                         ),
                       );
                     })
                 : Center(child: CircularProgressIndicator()),
           ),
+          GridView.builder(
+              itemCount: 2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, crossAxisSpacing: 31),
+              itemBuilder: (context, index) {
+                return Card();
+              }),
           SizedBox(height: size.height * 0.03),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,7 +327,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           child: Container(
                                             height: size.height * 0.17,
                                             width: size.width * 0.51,
-                                            color: kPrimaryLightColor,
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                  kPrimaryLightColor,
+                                                  kPrimaryColor.withOpacity(0.5)
+                                                ])),
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(10.0),

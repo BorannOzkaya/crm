@@ -123,31 +123,49 @@ class _BodyState extends State<Body> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Container(
-                                  color: kPrimaryLightColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          firmalar![index].companyName,
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(height: 8),
-                                        Text(
-                                          firmalar![index].email,
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                        SizedBox(height: 8),
-                                        Text("+0 " + firmalar![index].gsm),
-                                        SizedBox(height: 8),
-                                        Text(firmalar![index].countryName +
-                                            " - " +
-                                            firmalar![index].cityName.toString())
-                                      ],
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                        kPrimaryColor,
+                                        Colors.grey
+                                      ])),
+                                  child: Card(
+                                    shape: new RoundedRectangleBorder(
+                                        side: new BorderSide(
+                                            color: Colors.white, width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    color: kPrimaryLightColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            firmalar![index].companyName,
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            firmalar![index].email,
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text("+0 " + firmalar![index].gsm),
+                                          SizedBox(height: 8),
+                                          Text(firmalar![index].countryName +
+                                              " - " +
+                                              firmalar![index]
+                                                  .cityName
+                                                  .toString())
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -181,9 +199,11 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Firma Ekle'),
-                IconButton(onPressed: () {
-                  Navigator.pop(context);
-                }, icon: Icon(Icons.close))
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.close))
               ],
             ),
             actions: <Widget>[
