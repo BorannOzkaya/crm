@@ -107,64 +107,77 @@ class _BodyState extends State<Body> {
         Padding(
           padding: const EdgeInsets.only(top: 100),
           child: FutureBuilder(
-            future: Future.delayed(Duration(seconds: 1)),
-            builder: (c, s) => s.connectionState == ConnectionState.done
-                ? ListView.builder(
-                    itemCount: companyCall!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Container(
-                            height: size.height * 0.15,
-                            color: kPrimaryLightColor,
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Positioned(
-                                  top: 5,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      height: size.height * 0.17,
-                                      width: size.width * 0.51,
-                                      color: kPrimaryLightColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              companyCall![index].companyName,
-                                              style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w600),
+              future: Future.delayed(Duration(seconds: 1)),
+              builder: (BuildContext context, s) {
+                if (s.hasData) {
+                  return s.connectionState == ConnectionState.done
+                      ? ListView.builder(
+                          itemCount: companyCall!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  height: size.height * 0.15,
+                                  color: kPrimaryLightColor,
+                                  child: Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Positioned(
+                                        top: 5,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Container(
+                                            height: size.height * 0.17,
+                                            width: size.width * 0.51,
+                                            color: kPrimaryLightColor,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    companyCall![index]
+                                                        .companyName,
+                                                    style: TextStyle(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  SizedBox(height: 7),
+                                                  Text(
+                                                    companyCall![index].email,
+                                                    style: TextStyle(
+                                                        color: Colors.grey),
+                                                  ),
+                                                  SizedBox(height: 7),
+                                                  Text(companyCall![index]
+                                                      .formattedDatetime)
+                                                ],
+                                              ),
                                             ),
-                                            SizedBox(height: 7),
-                                            Text(
-                                              companyCall![index].email,
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            SizedBox(height: 7),
-                                            Text(companyCall![index]
-                                                .formattedDatetime)
-                                          ],
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    })
-                : Center(child: CircularProgressIndicator()),
-          ),
+                              ),
+                            );
+                          })
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        );
+                } else {
+                  return Center(
+                    child: Text("Veri Bulunmamaktadır."),
+                  );
+                }
+              }),
         ),
       ],
     );

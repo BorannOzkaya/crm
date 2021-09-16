@@ -29,11 +29,9 @@ class _BodyState extends State<Body> {
 
     if (response.statusCode == 200) {
       //print(response.body);
-      var decode = json.decode(response.body);
-      companyName = decode["data"][0]["company_name"];
-      print(companyName);
-      // previousinterview = previousInterviewApiDatasFromJson(
-      //     jsonEncode(decode["data"][0].toString()));
+      var decode = jsonDecode(response.body);
+      // var previousinterview = decode["data"][0];
+      // print(previousinterview);
     } else {
       print(response.reasonPhrase);
     }
