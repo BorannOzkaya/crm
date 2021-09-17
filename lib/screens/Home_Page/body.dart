@@ -27,11 +27,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   getStatusCountList() async {
     var url = Uri.parse(
         'https://crmsr.pen.com.tr/api/interview-status/getstatusescounts');
-    var response = await http
-        .post(url, body: {"id": "0"}, headers: {'token': tokencomponent});
+    final msg = jsonEncode({"id": 0});
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      // print(response.body);
+      print(response.body);
       var decode = jsonDecode(response.body);
       statusCount = statusDatumApiDatasFromJson(jsonEncode(decode["data"]!));
     } else {
@@ -42,13 +44,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   getCompanyCallList() async {
     var url = Uri.parse(
         'https://crmsr.pen.com.tr/api/company_interview/getallbydate');
-    final msg = jsonEncode({"interview_date": dateToday.toIso8601String()});
+    final msg = jsonEncode({
+      "interview_date": dateToday.toIso8601String(),
+      "is_Admin": true,
+      "owner_id": 1
+    });
     var response = await http.post(url,
         body: msg,
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      // print(response.body);
+      print(response.body);
       var decode = jsonDecode(response.body);
       companyCall =
           statusCompanyCallApiDatasFromJson(jsonEncode(decode["data"]!));
@@ -186,7 +192,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       ? GridView.builder(
                           shrinkWrap: true,
                           physics: ScrollPhysics(),
-                          itemCount: 5,
+                          itemCount: statusCount.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, crossAxisSpacing: 31),
@@ -295,9 +301,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 // color: Colors.blue,
                 child: FutureBuilder(
                     future: Future.delayed(Duration(seconds: 1)),
-                    builder: (BuildContext context, AsyncSnapshot s) {
-                      if (s.hasData) {
-                        return ListView.builder(
+                    builder: (BuildContext context, AsyncSnapshot s) => s
+                                .connectionState ==
+                            ConnectionState.done
+                        ? ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: companyCall.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -372,87 +379,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                   ),
                                 );
                               }
-                            });
-                      } else {
-                        return Center(
-                          child: Text("Veri Bulunmamaktadır."),
-                        );
-                      }
-                    }
-
-                    // ListView.builder(
-                    //         scrollDirection: Axis.horizontal,
-                    //         itemCount: companyCall.length,
-                    //         itemBuilder: (BuildContext context, int index) {
-                    //           if (companyCall.length == 0) {
-                    //             return Expanded(child: Text("Veri yok"));
-                    //           } else {
-                    //             return Container(
-                    //               margin: EdgeInsets.all(10),
-                    //               width: 210,
-                    //               // color: Colors.red,
-                    //               child: Stack(
-                    //                 alignment: Alignment.topCenter,
-                    //                 children: [
-                    //                   Positioned(
-                    //                     top: 5,
-                    //                     child: ClipRRect(
-                    //                       borderRadius: BorderRadius.circular(10),
-                    //                       child: GestureDetector(
-                    //                         onTap: () {
-                    //                           var number = companyCall[index].gsm;
-                    //                           phonenumber = number;
-                    //                           _launchUrl();
-                    //                         },
-                    //                         child: Container(
-                    //                           height: size.height * 0.17,
-                    //                           width: size.width * 0.51,
-                    //                           decoration: BoxDecoration(
-                    //                               gradient: LinearGradient(
-                    //                                   begin: Alignment.centerLeft,
-                    //                                   end: Alignment.centerRight,
-                    //                                   colors: [
-                    //                                 kPrimaryLightColor,
-                    //                                 kPrimaryColor.withOpacity(0.5)
-                    //                               ])),
-                    //                           child: Padding(
-                    //                             padding:
-                    //                                 const EdgeInsets.all(10.0),
-                    //                             child: Column(
-                    //                               crossAxisAlignment:
-                    //                                   CrossAxisAlignment.start,
-                    //                               children: [
-                    //                                 Text(
-                    //                                   companyCall[index]
-                    //                                       .companyName,
-                    //                                   style: TextStyle(
-                    //                                       fontSize: 22,
-                    //                                       fontWeight:
-                    //                                           FontWeight.w600),
-                    //                                 ),
-                    //                                 SizedBox(height: 7),
-                    //                                 Text(
-                    //                                   companyCall[index].email,
-                    //                                   style: TextStyle(
-                    //                                       color: Colors.grey),
-                    //                                 ),
-                    //                                 SizedBox(height: 7),
-                    //                                 Text(companyCall[index]
-                    //                                     .formattedDatetime)
-                    //                               ],
-                    //                             ),
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             );
-                    //           }
-                    //         })
-
-                    ),
+                            })
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          )),
               ),
               SizedBox(height: 20)
             ],
