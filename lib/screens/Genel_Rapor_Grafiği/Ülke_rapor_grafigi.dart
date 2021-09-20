@@ -45,7 +45,7 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black45,
+          backgroundColor: Color(0xFF284269),
           title: RichText(
             text: TextSpan(
                 text: 'PEN ',

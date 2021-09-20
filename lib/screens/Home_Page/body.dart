@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:crm/constants.dart';
 import 'package:crm/screens/Home_Page/home.dart';
+import 'package:crm/screens/Home_Page/totalcall_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -24,18 +27,50 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   List<StatusDatum> statusCount = [];
   List<CaompanyCallDatum> companyCall = [];
+  String toplamDeger = "0";
   getStatusCountList() async {
     var url = Uri.parse(
-        'https://crmsr.pen.com.tr/api/interview-status/getstatusescounts');
+        'https://crmsr.pen.com.tr/api/interview-status/getallstatuscounts');
     final msg = jsonEncode({"id": 0});
     var response = await http.post(url,
         body: msg,
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       var decode = jsonDecode(response.body);
-      statusCount = statusDatumApiDatasFromJson(jsonEncode(decode["data"]!));
+      decode['data'].forEach((element) => statusCount.add(StatusDatum(
+            statusId: element['status_id'],
+            count: element['count'],
+          )));
+      int birinciveri = decode["data"][0]["count"];
+      int ikinviveri = decode["data"][1]["count"];
+      int ucuncuveri = decode["data"][2]["count"];
+      int dorduncuveri = decode["data"][4]["count"];
+      int toplam = birinciveri + ikinviveri + ucuncuveri + dorduncuveri;
+      toplamDeger = toplam.toString();
+      // statusCount = statusDatumApiDatasFromJson(jsonEncode(decode["data"]!));
+    } else {
+      //print(response.reasonPhrase);
+    }
+  }
+
+  List<TotalCallDatum> totalCall = [];
+  getTotalCall() async {
+    var url = Uri.parse(
+        'https://crmsr.pen.com.tr/api/company-interview/gettotalcalltime');
+    final msg = json.encode({"status_id": 1, "is_admin": true});
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      var decode = json.decode(response.body);
+      // totalCall = decode["data"][0]["total_call_time"];
+      decode['data'].forEach((element) => totalCall
+          .add(TotalCallDatum(totalCallTime: element['total_call_time'])));
+      print(totalCall);
     } else {
       print(response.reasonPhrase);
     }
@@ -54,12 +89,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       var decode = jsonDecode(response.body);
       companyCall =
           statusCompanyCallApiDatasFromJson(jsonEncode(decode["data"]!));
     } else {
-      print(response.reasonPhrase);
+      //print(response.reasonPhrase);
     }
   }
 
@@ -85,6 +120,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       });
     });
     getCompanyCallList().whenComplete(() {
+      setState(() {
+        isLoading = true;
+      });
+    });
+    getTotalCall().whenComplete(() {
       setState(() {
         isLoading = true;
       });
@@ -119,28 +159,32 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   List data = [
     {
       "text": "Olumlu Sonuçlanan Aramalar",
+      "text2": "0",
       "color": Colors.green,
       "backgroundcolor1": Color(0xFF373b44).withOpacity(0.9),
       "backgroundcolor2": Color(0xFF4286f4).withOpacity(0.9),
       "icon": FontAwesomeIcons.phone
     },
     {
-      "text": "Olumsuz Sonuçlanan Aramalar",
-      "color": Colors.red,
-      "backgroundcolor1": Color(0xFF493240).withOpacity(0.9),
-      "backgroundcolor2": Colors.pink[800],
-      "icon": FontAwesomeIcons.phoneSlash
-    },
-    {
-      "text": "Nötr Aramalar ",
+      "text": "Nötr Aramalar",
+      "text2": "0",
       "color": Colors.yellow,
       "backgroundcolor1": Color(0xFFa86008).withOpacity(0.9),
       "backgroundcolor2": Color(0xFFffba56).withOpacity(0.9),
       "icon": FontAwesomeIcons.phone
     },
     {
+      "text": "Olumsuz Sonuçlanan Aramalar",
+      "text2": "0",
+      "color": Colors.red,
+      "backgroundcolor1": Color(0xFF493240).withOpacity(0.9),
+      "backgroundcolor2": Colors.pink[800],
+      "icon": FontAwesomeIcons.phoneSlash
+    },
+    {
       "text": "Dönülmeyen Aramalar",
       "color": Colors.blue,
+      "text2": "0",
       "backgroundcolor1": Color(0xFF289cf5).withOpacity(0.9),
       "backgroundcolor2": Color(0xFF84c0ec).withOpacity(0.9),
       "icon": FontAwesomeIcons.phone
@@ -148,12 +192,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     {
       "text": "Açılmayan Aramalar",
       "color": Colors.grey,
+      "text2": "0",
       "backgroundcolor1": Color(0xFF0a504a).withOpacity(0.9),
       "backgroundcolor2": Color(0xFF38ef7d).withOpacity(0.9),
       "icon": FontAwesomeIcons.phone
     },
     {
       "text": "Dönülmeyen Aramalar",
+      "text2": "0",
       "color": Colors.blue,
       "backgroundcolor1": Color(0xFF493240).withOpacity(0.9),
       "backgroundcolor2": Color(0xFFf09123).withOpacity(0.9),
@@ -184,83 +230,251 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
           ),
           SizedBox(height: 20),
-          FutureBuilder(
-              future: Future.delayed(Duration(seconds: 1)),
-              builder: (BuildContext context, s) {
-                if (s.hasData) {
-                  return s.connectionState == ConnectionState.done
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          itemCount: statusCount.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, crossAxisSpacing: 31),
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                          colors: [
-                                            data[index]["backgroundcolor1"],
-                                            data[index]["backgroundcolor2"]
-                                          ])),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 50),
-                                        child: Text(
-                                          data[index]["text"],
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
+          Column(
+            children: [
+              FutureBuilder(
+                  future: Future.delayed(Duration(seconds: 1)),
+                  builder: (BuildContext context, s) {
+                    // if (s.hasData) {
+                    return s.connectionState == ConnectionState.done
+                        ? Column(
+                            children: [
+                              ListView.builder(
+                                  itemCount: 1,
+                                  shrinkWrap: true,
+                                  itemBuilder: (BuildContext context, index) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Container(
+                                            height: size.height * 0.20,
+                                            width: size.width * 0.44,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                      Color(0xFF373b44)
+                                                          .withOpacity(0.9),
+                                                      Color(0xFF4286f4)
+                                                          .withOpacity(0.9)
+                                                    ])),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
+                                              child: Center(
+                                                child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10),
+                                                      child: Text(
+                                                        "Toplam Arama \nSaniyesi: \n",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        height: size.height *
+                                                            0.025),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Icon(
+                                                            FontAwesomeIcons
+                                                                .phone,
+                                                            color: Colors.grey),
+                                                        Text(
+                                                          totalCall[index]
+                                                              .totalCallTime
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Container(
+                                            height: size.height * 0.20,
+                                            width: size.width * 0.44,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                      Color(0xFF289cf5)
+                                                          .withOpacity(0.9),
+                                                      Color(0xFF84c0ec)
+                                                          .withOpacity(0.9)
+                                                    ])),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 30),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Toplam Aramalar: \n",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          size.height * 0.03),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Icon(
+                                                            FontAwesomeIcons
+                                                                .phone,
+                                                            color: Colors.grey),
+                                                        Text(
+                                                          (toplamDeger)
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 24),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
+                              SizedBox(height: 15),
+                              GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: statusCount.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 31),
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    data[index]
+                                                        ["backgroundcolor1"],
+                                                    data[index]
+                                                        ["backgroundcolor2"]
+                                                  ])),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 50),
+                                                child: Text(
+                                                  data[index]["text"],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: size.height * 0.03),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20, right: 20),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Icon(
+                                                      data[index]["icon"],
+                                                      color: data[index]
+                                                          ["color"],
+                                                    ),
+                                                    Text(
+                                                      // data[index]["text2"],
+                                                      statusCount[index]
+                                                          .count
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 24),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(height: size.height * 0.03),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20, right: 20),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Icon(
-                                              data[index]["icon"],
-                                              color: data[index]["color"],
-                                            ),
-                                            Text(
-                                              statusCount[index]
-                                                  .count
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          })
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        );
-                } else {
-                  return Center(child: Text("Veri Bulunmamaktadır."));
-                }
-              }),
+                                    );
+                                  }),
+                            ],
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                    // } else {
+                    //   return Center(child: Text("Veri Bulunmamaktadır."));
+                    // }
+                  }),
+            ],
+          ),
           SizedBox(height: size.height * 0.03),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         bucket: bucket,
       ),
       appBar: AppBar(
-        backgroundColor: Colors.black45,
+        backgroundColor: Color(0xFF284269),
         title: RichText(
           text: TextSpan(
               text: 'PEN ',

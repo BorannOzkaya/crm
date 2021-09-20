@@ -23,7 +23,7 @@ class HomeDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.black45,
+              color: Color(0xFF284269),
             ),
             child: Text(
               'CRM-SR',
