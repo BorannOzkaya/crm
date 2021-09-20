@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../constants.dart';
 
-class BayiScreen extends StatefulWidget {
-  BayiScreen({Key? key}) : super(key: key);
+class PaketlerScreen extends StatefulWidget {
+  const PaketlerScreen({Key? key}) : super(key: key);
 
   @override
-  _BayiScreenState createState() => _BayiScreenState();
+  _PaketlerScreenState createState() => _PaketlerScreenState();
 }
 
-class _BayiScreenState extends State<BayiScreen> {
+class _PaketlerScreenState extends State<PaketlerScreen> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
