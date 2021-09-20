@@ -109,80 +109,74 @@ class _BodyState extends State<Body> {
           ),
           SingleChildScrollView(
             child: Container(
-                height: size.height * 0.60,
+                height: size.height * 0.68,
                 //color: Colors.blue,
                 child: FutureBuilder(
                     future: Future.delayed(Duration(seconds: 1)),
                     builder: (BuildContext context, s) {
-                      if (s.hasData) {
-                        return ListView.builder(
-                            itemCount: firmalar!.length,
-                            itemBuilder: (BuildContext context, index) {
-                              return s.connectionState == ConnectionState.done
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                  colors: [
-                                                kPrimaryColor,
-                                                Colors.grey
-                                              ])),
-                                          child: Card(
-                                            shape: new RoundedRectangleBorder(
-                                                side: new BorderSide(
-                                                    color: Colors.white,
-                                                    width: 2.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0)),
-                                            color: kPrimaryLightColor,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    firmalar![index]
-                                                        .companyName,
-                                                    style: TextStyle(
-                                                        fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    firmalar![index].email,
-                                                    style: TextStyle(
-                                                        color: Colors.grey),
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text("+0 " +
-                                                      firmalar![index].gsm),
-                                                  SizedBox(height: 8),
-                                                  Text(firmalar![index]
-                                                          .countryName +
+                      return s.connectionState == ConnectionState.done
+                          ? ListView.builder(
+                              itemCount: firmalar!.length,
+                              itemBuilder: (BuildContext context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                            kPrimaryColor,
+                                            Color(0xFF284269)
+                                          ])),
+                                      child: Card(
+                                        shape: new RoundedRectangleBorder(
+                                            side: new BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0)),
+                                        color: kPrimaryLightColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                firmalar![index].companyName,
+                                                style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                firmalar![index].email,
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                  "+0 " + firmalar![index].gsm),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                  firmalar![index].countryName +
                                                       " - " +
                                                       firmalar![index]
                                                           .cityName
                                                           .toString())
-                                                ],
-                                              ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    )
-                                  : Center(child: CircularProgressIndicator());
-                            });
-                      } else {
-                        return Center(child: Text("Veri Bulunmamaktadır."));
-                      }
+                                    ),
+                                  ),
+                                );
+                              })
+                          : Center(child: CircularProgressIndicator());
                     })),
           ),
         ],
