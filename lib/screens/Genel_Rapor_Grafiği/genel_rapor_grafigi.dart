@@ -18,16 +18,22 @@ class _GenelRaporGrafigiState extends State<GenelRaporGrafigi> {
   List<StatusDatum> statusCount = [];
   getStatusCountList() async {
     var url = Uri.parse(
-        'https://crmsr.pen.com.tr/api/interview-status/getstatusescounts');
-    var response = await http
-        .post(url, body: {"id": "0"}, headers: {'token': tokencomponent});
+        'https://crmsr.pen.com.tr/api/interview-status/getallstatuscounts');
+    final msg = jsonEncode({"id": 0});
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      // print(response.body);
+      print(response.body);
       var decode = jsonDecode(response.body);
-      statusCount = statusDatumApiDatasFromJson(jsonEncode(decode["data"]));
+      decode['data'].forEach((element) => statusCount.add(StatusDatum(
+            statusId: element['status_id'],
+            count: element['count'],
+          )));
+      // statusCount = statusDatumApiDatasFromJson(jsonEncode(decode["data"]!));
     } else {
-      print(response.reasonPhrase);
+      //print(response.reasonPhrase);
     }
   }
 
