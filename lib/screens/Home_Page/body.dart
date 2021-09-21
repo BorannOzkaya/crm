@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 
 import 'Company_call_api.dart';
 import 'status_count_api.dart';
@@ -248,138 +249,154 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Container(
-                                            height: size.height * 0.20,
-                                            width: size.width * 0.44,
-                                            decoration: BoxDecoration(
+                                        Bounce(
+                                          duration: Duration(milliseconds: 110),
+                                          onPressed: () {},
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight,
-                                                    colors: [
-                                                      Color(0xFF373b44)
-                                                          .withOpacity(0.9),
-                                                      Color(0xFF4286f4)
-                                                          .withOpacity(0.9)
-                                                    ])),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(15.0),
-                                              child: Center(
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 10),
-                                                      child: Text(
-                                                        "Toplam Arama \nSaniyesi: \n",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: size.height *
-                                                            0.025),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Icon(
-                                                            FontAwesomeIcons
-                                                                .phone,
-                                                            color: Colors.grey),
-                                                        Text(
-                                                          totalCall[index]
-                                                              .totalCallTime
-                                                              .toString(),
+                                                    BorderRadius.circular(20)),
+                                            child: Container(
+                                              height: size.height * 0.20,
+                                              width: size.width * 0.44,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                        Color(0xFF373b44)
+                                                            .withOpacity(0.9),
+                                                        Color(0xFF4286f4)
+                                                            .withOpacity(0.9)
+                                                      ])),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 10),
+                                                        child: Text(
+                                                          "Toplam Arama \nSaniyesi: \n",
+                                                          textAlign:
+                                                              TextAlign.center,
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 20),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
-                                                      ],
-                                                    )
-                                                  ],
+                                                      ),
+                                                      SizedBox(
+                                                          height: size.height *
+                                                              0.025),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Icon(
+                                                              FontAwesomeIcons
+                                                                  .phone,
+                                                              color:
+                                                                  Colors.grey),
+                                                          Text(
+                                                            totalCall[index]
+                                                                .totalCallTime
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                        Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Container(
-                                            height: size.height * 0.20,
-                                            width: size.width * 0.44,
-                                            decoration: BoxDecoration(
+                                        Bounce(
+                                          duration: Duration(milliseconds: 110),
+                                          onPressed: () {},
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight,
-                                                    colors: [
-                                                      Color(0xFF289cf5)
-                                                          .withOpacity(0.9),
-                                                      Color(0xFF84c0ec)
-                                                          .withOpacity(0.9)
-                                                    ])),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 30),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "Toplam Aramalar: \n",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  SizedBox(
-                                                      height:
-                                                          size.height * 0.03),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20,
-                                                            right: 20),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Icon(
-                                                            FontAwesomeIcons
-                                                                .phone,
-                                                            color: Colors.grey),
-                                                        Text(
-                                                          (toplamDeger)
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 24),
-                                                        ),
-                                                      ],
+                                                    BorderRadius.circular(20)),
+                                            child: Container(
+                                              height: size.height * 0.20,
+                                              width: size.width * 0.44,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                        Color(0xFF289cf5)
+                                                            .withOpacity(0.9),
+                                                        Color(0xFF84c0ec)
+                                                            .withOpacity(0.9)
+                                                      ])),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 30),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Toplam Aramalar: \n",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                  )
-                                                ],
+                                                    SizedBox(
+                                                        height:
+                                                            size.height * 0.03),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 20),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Icon(
+                                                              FontAwesomeIcons
+                                                                  .phone,
+                                                              color:
+                                                                  Colors.grey),
+                                                          Text(
+                                                            (toplamDeger)
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 24),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -400,66 +417,72 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                     return Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 10),
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Container(
-                                          decoration: BoxDecoration(
+                                      child: Bounce(
+                                        duration: Duration(milliseconds: 110),
+                                        onPressed: () {},
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(20),
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                  colors: [
-                                                    data[index]
-                                                        ["backgroundcolor1"],
-                                                    data[index]
-                                                        ["backgroundcolor2"]
-                                                  ])),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 50),
-                                                child: Text(
-                                                  data[index]["text"],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  BorderRadius.circular(20)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                      data[index]
+                                                          ["backgroundcolor1"],
+                                                      data[index]
+                                                          ["backgroundcolor2"]
+                                                    ])),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 50),
+                                                  child: Text(
+                                                    data[index]["text"],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                  height: size.height * 0.03),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 20, right: 20),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Icon(
-                                                      data[index]["icon"],
-                                                      color: data[index]
-                                                          ["color"],
-                                                    ),
-                                                    Text(
-                                                      // data[index]["text2"],
-                                                      statusCount[index]
-                                                          .count
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 24),
-                                                    ),
-                                                  ],
+                                                SizedBox(
+                                                    height: size.height * 0.03),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20, right: 20),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Icon(
+                                                        data[index]["icon"],
+                                                        color: data[index]
+                                                            ["color"],
+                                                      ),
+                                                      Text(
+                                                        // data[index]["text2"],
+                                                        statusCount[index]
+                                                            .count
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 24),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

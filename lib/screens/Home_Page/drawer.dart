@@ -5,6 +5,7 @@ import 'package:crm/screens/Paketler_Screen/paketler_screen.dart';
 import 'package:crm/screens/Previous_interview/previous_interview.dart';
 import 'package:crm/screens/Sign_Screen/sign_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 
 import '../../constants.dart';
 import 'home.dart';
@@ -35,119 +36,152 @@ class HomeDrawer extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.home_outlined),
-                SizedBox(width: 10),
-                const Text('Anasayfa'),
-              ],
+          Bounce(
+            duration: Duration(milliseconds: 110),
+            onPressed: () {},
+            child: ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.home_outlined),
+                  SizedBox(width: 10),
+                  const Text('Anasayfa'),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => HomePage(
+                              token: tokencomponent,
+                            )));
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => HomePage(
-                            token: tokencomponent,
-                          )));
-            },
           ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.replay_outlined),
-                SizedBox(width: 10),
-                const Text('Geçmiş Randevular'),
-              ],
+          admincontroller == true
+              ? Bounce(
+                  duration: Duration(milliseconds: 110),
+                  onPressed: () {},
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.replay_outlined),
+                        SizedBox(width: 10),
+                        const Text('Geçmiş Randevular'),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  GecmisRandevular()));
+                    },
+                  ),
+                )
+              : Container(),
+          Bounce(
+            duration: Duration(milliseconds: 110),
+            onPressed: () {},
+            child: ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.analytics_outlined),
+                  SizedBox(width: 10),
+                  const Text('Genel Rapor Grafiği'),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            GenelRaporGrafigi()));
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => GecmisRandevular()));
-            },
           ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.analytics_outlined),
-                SizedBox(width: 10),
-                const Text('Genel Rapor Grafiği'),
-              ],
+          admincontroller == true
+              ? Bounce(
+                  duration: Duration(milliseconds: 110),
+                  onPressed: () {},
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.analytics_outlined),
+                        SizedBox(width: 10),
+                        const Text('Ülke Rapor Grafiği'),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  // UlkeRaporGrafigi()
+                                  UlkeRaporGrafigi()));
+                    },
+                  ),
+                )
+              : Container(),
+          Bounce(
+            duration: Duration(milliseconds: 110),
+            onPressed: () {},
+            child: ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.account_tree_outlined),
+                  SizedBox(width: 10),
+                  const Text('Firma Paketleri'),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            // UlkeRaporGrafigi()
+                            PaketlerScreen()));
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => GenelRaporGrafigi()));
-            },
           ),
-          // if(admin == true) {}else{},
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.analytics_outlined),
-                SizedBox(width: 10),
-                const Text('Ülke Rapor Grafiği'),
-              ],
+          Bounce(
+            duration: Duration(milliseconds: 110),
+            onPressed: () {},
+            child: ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.account_tree_outlined),
+                  SizedBox(width: 10),
+                  const Text('Paketler'),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            // UlkeRaporGrafigi()
+                            Paketler()));
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          // UlkeRaporGrafigi()
-                          UlkeRaporGrafigi()));
-            },
           ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.account_tree_outlined),
-                SizedBox(width: 10),
-                const Text('Firma Paketleri'),
-              ],
+          Bounce(
+            duration: Duration(milliseconds: 110),
+            onPressed: () {},
+            child: ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.logout),
+                  SizedBox(width: 10),
+                  const Text('Çıkış Yap'),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => SignInScreen()));
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          // UlkeRaporGrafigi()
-                          PaketlerScreen()));
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.account_tree_outlined),
-                SizedBox(width: 10),
-                const Text('Paketler'),
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          // UlkeRaporGrafigi()
-                          Paketler()));
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                Icon(Icons.logout),
-                SizedBox(width: 10),
-                const Text('Çıkış Yap'),
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => SignInScreen()));
-            },
           ),
           SizedBox(height: size.height * 0.22),
           ListTile(
