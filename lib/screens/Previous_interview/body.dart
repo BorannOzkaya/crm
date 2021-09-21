@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import '../../constants.dart';
 import 'previous_interview_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -144,29 +145,49 @@ class _BodyState extends State<Body> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
-                  child: Text(
-                    previousinterviewDisplay[index].username,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      // color: Color(0xFF284269),
-                    ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.person, color: Color(0xFF284269)),
+                      SizedBox(width: 10),
+                      Text(
+                        previousinterviewDisplay[index].username,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          // color: Color(0xFF284269),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 16, 16),
-                  child: Text(
-                    previousinterviewDisplay[index].companyName +
-                        " / " +
-                        previousinterviewDisplay[index].countryName,
-                    style: TextStyle(fontSize: 16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.language, color: Color(0xFF284269)),
+                      SizedBox(width: 10),
+                      Text(
+                        previousinterviewDisplay[index].companyName +
+                            " / " +
+                            previousinterviewDisplay[index].countryName,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 16, 16),
-                  child: Text(
-                    previousinterviewDisplay[index].interviewDate.toString(),
-                    style: TextStyle(fontSize: 16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.timer, color: Color(0xFF284269)),
+                      SizedBox(width: 10),
+                      Text(
+                        previousinterviewDisplay[index]
+                            .interviewDate
+                            .toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
                 ),
               ],

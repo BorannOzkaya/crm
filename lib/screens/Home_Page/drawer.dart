@@ -1,5 +1,6 @@
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/%C3%9Clke_rapor_grafigi.dart';
 import 'package:crm/screens/Genel_Rapor_Grafi%C4%9Fi/genel_rapor_grafigi.dart';
+import 'package:crm/screens/Paketler_Screen/packages.dart';
 import 'package:crm/screens/Paketler_Screen/paketler_screen.dart';
 import 'package:crm/screens/Previous_interview/previous_interview.dart';
 import 'package:crm/screens/Sign_Screen/sign_screen.dart';
@@ -104,7 +105,7 @@ class HomeDrawer extends StatelessWidget {
               children: [
                 Icon(Icons.account_tree_outlined),
                 SizedBox(width: 10),
-                const Text('Paketler'),
+                const Text('Firma Paketleri'),
               ],
             ),
             onTap: () {
@@ -114,6 +115,23 @@ class HomeDrawer extends StatelessWidget {
                       builder: (BuildContext context) =>
                           // UlkeRaporGrafigi()
                           PaketlerScreen()));
+            },
+          ),
+          ListTile(
+            title: Row(
+              children: [
+                Icon(Icons.account_tree_outlined),
+                SizedBox(width: 10),
+                const Text('Paketler'),
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          // UlkeRaporGrafigi()
+                          Paketler()));
             },
           ),
           ListTile(
