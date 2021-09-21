@@ -71,115 +71,118 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Firmalar",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  width: size.width * 0.4,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                        onPressed: () {
-                          _showMyDialog();
-                        },
-                        padding: EdgeInsets.only(left: 30, right: 30),
-                        color: kPrimaryColor,
-                        child: Text(
-                          "Yeni Firma Ekle",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
-                        )),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Firmalar",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  Container(
+                    width: size.width * 0.4,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      // ignore: deprecated_member_use
+                      child: FlatButton(
+                          onPressed: () {
+                            _showMyDialog();
+                          },
+                          padding: EdgeInsets.only(left: 30, right: 30),
+                          color: kPrimaryColor,
+                          child: Text(
+                            "Yeni Firma Ekle",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Container(
-                height: size.height * 0.68,
-                //color: Colors.blue,
-                child: FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 1)),
-                    builder: (BuildContext context, s) {
-                      return s.connectionState == ConnectionState.done
-                          ? ListView.builder(
-                              itemCount: firmalar!.length,
-                              itemBuilder: (BuildContext context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                            kPrimaryColor,
-                                            Color(0xFF284269)
-                                          ])),
-                                      child: Card(
-                                        shape: new RoundedRectangleBorder(
-                                            side: new BorderSide(
-                                                color: Colors.white,
-                                                width: 2.0),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
-                                        color: kPrimaryLightColor,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                firmalar![index].companyName,
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                firmalar![index].email,
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                  "+0 " + firmalar![index].gsm),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                  firmalar![index].countryName +
-                                                      " - " +
-                                                      firmalar![index]
-                                                          .cityName
-                                                          .toString())
-                                            ],
+            SingleChildScrollView(
+              child: Container(
+                  height: size.height * 0.68,
+                  //color: Colors.blue,
+                  child: FutureBuilder(
+                      future: Future.delayed(Duration(seconds: 1)),
+                      builder: (BuildContext context, s) {
+                        return s.connectionState == ConnectionState.done
+                            ? ListView.builder(
+                                itemCount: firmalar!.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                              kPrimaryColor,
+                                              Color(0xFF284269)
+                                            ])),
+                                        child: Card(
+                                          shape: new RoundedRectangleBorder(
+                                              side: new BorderSide(
+                                                  color: Colors.white,
+                                                  width: 2.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0)),
+                                          color: kPrimaryLightColor,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  firmalar![index].companyName,
+                                                  style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  firmalar![index].email,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text("+0 " +
+                                                    firmalar![index].gsm),
+                                                SizedBox(height: 8),
+                                                Text(firmalar![index]
+                                                        .countryName +
+                                                    " - " +
+                                                    firmalar![index]
+                                                        .cityName
+                                                        .toString())
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              })
-                          : Center(child: CircularProgressIndicator());
-                    })),
-          ),
-        ],
+                                  );
+                                })
+                            : Center(child: CircularProgressIndicator());
+                      })),
+            ),
+          ],
+        ),
       ),
     );
   }

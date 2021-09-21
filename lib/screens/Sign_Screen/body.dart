@@ -30,6 +30,7 @@ class _BodyState extends State<Body> {
   String? message;
   int? userid;
   int? genderid;
+  bool admincontrol = false;
 
   getLogin(String userName, String password) async {
     var headers = {
@@ -49,15 +50,18 @@ class _BodyState extends State<Body> {
       message = decode["message"];
       userid = decode["data"]["id"];
       genderid = decode["data"]["gender_id"];
+      admincontrol = decode["data"]["is_admin"];
       // user = decode["data"]["username"]!;
       // password = decode["data"]["password"]!;
       tokencomponent = token.toString();
       gendercomponent = genderid!;
       useridcomponent = userid!;
+      admincontroller = admincontrol;
       // status = loginApiDatasFromJson(jsonEncode(decode["data"]));
       print(token);
       print(message);
       print(userid);
+      print(admincontrol);
     } else {
       print(response.reasonPhrase);
     }
@@ -66,9 +70,6 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    // getlogin("", "").whencomplete(() {
-    //   setstate(() {});
-    // });
   }
 
   @override

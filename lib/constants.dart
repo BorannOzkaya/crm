@@ -20,3 +20,5 @@ String dateStatus = "2021-09-03";
 
 int useridcomponent = 1;
 int gendercomponent = 1;
+
+bool admincontroller = false;
