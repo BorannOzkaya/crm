@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../constants.dart';
+import 'Ülke_grafik_body.dart';
 
 class UlkeRaporGrafigi extends StatefulWidget {
   const UlkeRaporGrafigi({Key? key}) : super(key: key);
@@ -73,14 +74,15 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
-                    Text("Ülke ismi giriniz \nSeçmek için basılı tutun",
-                        textAlign: TextAlign.center)
+                    Text("Ülke ismi giriniz", textAlign: TextAlign.center)
                   ],
                 ),
               ),
               SizedBox(height: 30),
               SingleChildScrollView(
-                  child: Container(
+                  child: Column(
+                children: [
+                  Container(
                       height: size.height * 0.55,
                       //color: Colors.blue,
                       child: ListView.builder(
@@ -89,7 +91,31 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                             return index == 0
                                 ? _searchBar()
                                 : _listItem(index - 1);
-                          }))),
+                          })),
+                  SizedBox(height: 20),
+                  Container(
+                      width: size.width * 0.6,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(29),
+                          // ignore: deprecated_member_use
+                          child: FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            UlkeRaporlari()));
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 40),
+                              color: kPrimaryColor,
+                              child: Text(
+                                "Göster",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ))))
+                ],
+              )),
             ],
           ),
         ));
@@ -121,7 +147,7 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(40),
       child: Card(
-        shape: selected
+        shape: selectedIndex == statusCountDisplay[index].id
             ? new RoundedRectangleBorder(
                 side: new BorderSide(color: Colors.blue, width: 2.0),
                 borderRadius: BorderRadius.circular(40.0))
@@ -145,12 +171,20 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Checkbox(
+                          // activeColor: kPrimaryLightColor,
+                          // focusColor: kPrimaryLightColor,
+                          // hoverColor: kPrimaryLightColor,
+                          // checkColor: kPrimaryLightColor,
+                          autofocus: false,
                           value: selected,
                           onChanged: (value) {
                             selectedIndex = statusCountDisplay[index].id;
                             print(selectedIndex);
                             setState(() {
-                              selected = value!;
+                              if (selectedIndex ==
+                                  statusCountDisplay[index].id) {
+                                selected = false;
+                              }
                             });
                           })
                     ],
