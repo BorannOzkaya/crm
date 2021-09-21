@@ -21,17 +21,39 @@ class _BodyState extends State<Body> {
   List<PreviousInterviewDatum> previousinterviewDisplay =
       <PreviousInterviewDatum>[];
   getPreviousInterview() async {
-    var url = Uri.parse('https://crmsr.pen.com.tr/api/country/getlist');
+    var url = Uri.parse(
+        'https://crmsr.pen.com.tr/api/company-interview/getallolderinterviewlist');
     final msg = jsonEncode({});
     var response = await http.post(url,
         body: msg,
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      //print(response.body);
+      print(response.body);
       var decode = jsonDecode(response.body);
-      // var previousinterview = decode["data"][0];
-      // print(previousinterview);
+      decode["data"]
+          .forEach((element) => previousinterview.add(PreviousInterviewDatum(
+                id: element["id"],
+                companyId: element["company_id"],
+                statusId: element["status_id"],
+                isMailSend: element["is_mail_send"],
+                isCallBack: element["is_call_back"],
+                interviewDate: DateTime.parse(element["interview_date"]),
+                callTime: element["call_time"],
+                createdId: element["created_id"],
+                createdDate: DateTime.parse(element["created_date"]),
+                isActive: element["is_active"],
+                deletedId: element["deleted_id"],
+                deletedDate: element["deleted_date"],
+                formattedDatetime: element["formatted_datetime"],
+                username: element["username"],
+                companyName: element["company_name"],
+                gsm: element["gsm"],
+                countryCode: element["country_code"],
+                email: element["email"],
+                countryName: element["country_name"],
+                name: element["name"],
+              )));
     } else {
       print(response.reasonPhrase);
     }
@@ -64,7 +86,7 @@ class _BodyState extends State<Body> {
             SizedBox(height: 30),
             SingleChildScrollView(
                 child: Container(
-                    height: size.height * 0.55,
+                    height: size.height * 0.75,
                     //color: Colors.blue,
                     child: ListView.builder(
                         itemCount: previousinterviewDisplay.length + 1,
@@ -88,7 +110,7 @@ class _BodyState extends State<Body> {
           text = text.toLowerCase();
           setState(() {
             previousinterviewDisplay = previousinterview.where((note) {
-              var noteTitle = note.countryName.toLowerCase();
+              var noteTitle = note.username.toLowerCase();
               return noteTitle.contains(text);
             }).toList();
           });
@@ -101,49 +123,64 @@ class _BodyState extends State<Body> {
   bool selected = false;
   String? dateValue;
 
-  GestureDetector _listItem(index) {
-    return GestureDetector(
-        onLongPress: () {
-          setState(() {
-            selectedIndex = previousinterviewDisplay[index].id;
-            selected = true;
-            print(selectedIndex);
-            FocusScope.of(context).unfocus();
-          });
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    "${previousinterviewDisplay[index].countryName} ülkesi seçildi",
-                    textAlign: TextAlign.center,
-                  ),
-                  content: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("OK")),
-                );
-              });
-          // ignore: deprecated_member_use
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
+  _listItem(index) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [kPrimaryColor, Color(0xFF284269)])),
           child: Card(
+            shape: new RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(20.0)),
             color: kPrimaryLightColor,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    previousinterviewDisplay[index].countryName,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
+                  child: Text(
+                    previousinterviewDisplay[index].username,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      // color: Color(0xFF284269),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 16, 16),
+                  child: Text(
+                    previousinterviewDisplay[index].companyName +
+                        " / " +
+                        previousinterviewDisplay[index].countryName,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 16, 16),
+                  child: Text(
+                    previousinterviewDisplay[index].interviewDate.toString(),
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
+
+// onLongPress: () {
+//         setState(() {
+//           selectedIndex = previousinterviewDisplay[index].id;
+//           selected = true;
+//           print(selectedIndex);
+//           FocusScope.of(context).unfocus();

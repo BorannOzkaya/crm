@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:crm/screens/Companies_Screen/company_api.dart';
 import 'package:crm/screens/Home_Page/Company_call_api.dart';
 import 'package:crm/screens/Meeting_Screen/randecu_ekle_kullan%C4%B1c%C4%B1.dart';
-import 'package:crm/screens/Meeting_Screen/randevu_ekle.dart';
-import 'package:crm/screens/Users_screen/users_api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;

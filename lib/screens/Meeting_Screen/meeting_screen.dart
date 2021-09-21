@@ -15,7 +15,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black45,
+        backgroundColor: Color(0xFF284269),
         title: RichText(
           text: TextSpan(
               text: 'PEN ',

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crm/screens/Home_Page/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
@@ -160,10 +161,13 @@ class _BodyState extends State<Body> {
                     });
                   },
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                  color: kPrimaryColor,
+                  color: Color(0xFF284269),
                   child: Text(
                     "Giriş Yap",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
                   )),
             ),
           ),
@@ -212,7 +216,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
               hintText: "Şifre",
               icon: Icon(
                 Icons.lock,
-                color: kPrimaryColor,
+                color: Color(0xFF284269),
               ),
               suffixIcon: IconButton(
                 onPressed: () {
@@ -222,7 +226,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
                 },
                 icon: Icon(
                   Icons.visibility,
-                  color: kPrimaryColor,
+                  color: Color(0xFF284269),
                 ),
               ),
               border: InputBorder.none),
@@ -262,7 +266,7 @@ class UserNameTextFormField extends StatelessWidget {
           decoration: InputDecoration(
               icon: Icon(
                 Icons.person,
-                color: kPrimaryColor,
+                color: Color(0xFF284269),
               ),
               hintText: "Kullanıcı Adı",
               border: InputBorder.none),

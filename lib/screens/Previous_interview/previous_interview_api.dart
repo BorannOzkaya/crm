@@ -67,13 +67,13 @@ class PreviousInterviewDatum {
   int id;
   int companyId;
   int statusId;
-  bool isMailSend;
-  bool isCallBack;
+  bool? isMailSend;
+  bool? isCallBack;
   DateTime interviewDate;
   int callTime;
   int createdId;
   DateTime createdDate;
-  bool isActive;
+  bool? isActive;
   dynamic deletedId;
   dynamic deletedDate;
   String formattedDatetime;

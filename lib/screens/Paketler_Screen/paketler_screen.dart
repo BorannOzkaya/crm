@@ -13,6 +13,20 @@ class _PaketlerScreenState extends State<PaketlerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF284269),
+        title: RichText(
+          text: TextSpan(
+              text: 'PEN ',
+              style: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(text: 'CRM-SR', style: TextStyle(color: Colors.white))
+              ]),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +37,7 @@ class _PaketlerScreenState extends State<PaketlerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Bayiler",
+                    "Firma Paketleri",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   // ignore: deprecated_member_use
@@ -32,7 +46,7 @@ class _PaketlerScreenState extends State<PaketlerScreen> {
                       padding: EdgeInsets.only(left: 30, right: 30),
                       color: kPrimaryColor,
                       child: Text(
-                        "Yeni Bayi Ekle",
+                        "Firmaya Paket Ekle",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -46,30 +60,6 @@ class _PaketlerScreenState extends State<PaketlerScreen> {
               child: Container(
                 height: 50,
                 color: Colors.white,
-                child: Row(
-                  children: [
-                    Flexible(
-                        child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Firma Seçiniz",
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)),
-                      ),
-                    )),
-                    Flexible(
-                        child: Padding(
-                      padding: const EdgeInsets.only(left: 60),
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "%",
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                        ),
-                      ),
-                    )),
-                  ],
-                ),
               ),
             ),
             Padding(

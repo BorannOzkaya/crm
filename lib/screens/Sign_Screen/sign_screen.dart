@@ -6,13 +6,20 @@ import 'body.dart';
 class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("PEN CRM-SR"),
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "PEN CRM-SR",
+            style: TextStyle(color: kPrimaryColor),
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xFF284269),
+        ),
+        body: Body(),
       ),
-      body: Body(),
     );
   }
 }

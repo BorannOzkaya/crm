@@ -242,6 +242,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               ListView.builder(
                                   itemCount: 1,
                                   shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, index) {
                                     return Row(
                                       mainAxisAlignment:

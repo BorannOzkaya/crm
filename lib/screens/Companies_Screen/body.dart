@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(10),
                                     child: Container(
                                       decoration: BoxDecoration(
                                           gradient: LinearGradient(
