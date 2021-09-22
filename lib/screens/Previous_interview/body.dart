@@ -22,8 +22,7 @@ class _BodyState extends State<Body> {
   List<PreviousInterviewDatum> previousinterviewDisplay =
       <PreviousInterviewDatum>[];
   getPreviousInterview() async {
-    var url = Uri.parse(
-        'https://crmsr.pen.com.tr/api/company-interview/getallolderinterviewlist');
+    var url = Uri.parse('https://crmsr.pen.com.tr/api/older-interview/getlist');
     final msg = jsonEncode({});
     var response = await http.post(url,
         body: msg,
@@ -166,11 +165,13 @@ class _BodyState extends State<Body> {
                     children: [
                       Icon(Icons.language, color: Color(0xFF284269)),
                       SizedBox(width: 10),
-                      Text(
-                        previousinterviewDisplay[index].companyName +
-                            " / " +
-                            previousinterviewDisplay[index].countryName,
-                        style: TextStyle(fontSize: 16),
+                      Expanded(
+                        child: Text(
+                          previousinterviewDisplay[index].companyName +
+                              " / " +
+                              previousinterviewDisplay[index].countryName,
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ],
                   ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../constants.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'company_api.dart';
 
 class Body extends StatefulWidget {
@@ -13,7 +14,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  List<Firmalar>? firmalar;
+  List<Firmalar> firmalar = [];
+  List<Firmalar> firmalarDisplay = [];
   getFirmalarList() async {
     var url = Uri.parse('https://crmsr.pen.com.tr/api/Company/Getlist');
     var response = await http.post(url, headers: {'token': tokencomponent});
@@ -60,11 +62,17 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    getFirmalarList().whenComplete(() {
-      setState(() {});
-    });
+    // getFirmalarList().whenComplete(() {
+    //   setState(() {});
+    // });
     addCompany('', '', '', '', '').whenComplete(() {
       setState(() {});
+    });
+    getFirmalarList().then((value) {
+      setState(() {
+        firmalar.addAll(value);
+        firmalarDisplay = firmalar;
+      });
     });
   }
 
@@ -113,76 +121,120 @@ class _BodyState extends State<Body> {
               child: Container(
                   height: size.height * 0.68,
                   //color: Colors.blue,
-                  child: FutureBuilder(
-                      future: Future.delayed(Duration(seconds: 1)),
-                      builder: (BuildContext context, s) {
-                        return s.connectionState == ConnectionState.done
-                            ? ListView.builder(
-                                itemCount: firmalar!.length,
-                                itemBuilder: (BuildContext context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                              kPrimaryColor,
-                                              Color(0xFF284269)
-                                            ])),
-                                        child: Card(
-                                          shape: new RoundedRectangleBorder(
-                                              side: new BorderSide(
-                                                  color: Colors.white,
-                                                  width: 2.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0)),
-                                          color: kPrimaryLightColor,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  firmalar![index].companyName,
-                                                  style: TextStyle(
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  firmalar![index].email,
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                                SizedBox(height: 8),
-                                                Text("+0 " +
-                                                    firmalar![index].gsm),
-                                                SizedBox(height: 8),
-                                                Text(firmalar![index]
-                                                        .countryName +
-                                                    " - " +
-                                                    firmalar![index]
-                                                        .cityName
-                                                        .toString())
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                })
-                            : Center(child: CircularProgressIndicator());
+                  child: ListView.builder(
+                      itemCount: firmalarDisplay.length + 1,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: index == 0
+                                ? _searchBar()
+                                : _listItem(index - 1));
                       })),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  ClipRRect _listItem(int index) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [kPrimaryColor, Color(0xFF284269)])),
+        child: Card(
+          shape: new RoundedRectangleBorder(
+              side: new BorderSide(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(8.0)),
+          color: kPrimaryLightColor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.building,
+                      color: Color(0xFF284269),
+                    ),
+                    SizedBox(width: 7),
+                    Expanded(
+                      child: Text(
+                        firmalarDisplay[index].companyName,
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.mail_outline_outlined,
+                      color: Color(0xFF284269),
+                    ),
+                    SizedBox(width: 7),
+                    Text(
+                      firmalarDisplay[index].email,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.phoneAlt,
+                      color: Color(0xFF284269),
+                      size: 18,
+                    ),
+                    SizedBox(width: 7),
+                    Text("+" +
+                        firmalarDisplay[index].countryCode +
+                        firmalarDisplay[index].gsm),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.language,
+                      color: Color(0xFF284269),
+                    ),
+                    SizedBox(width: 7),
+                    Text(firmalarDisplay[index].countryName +
+                        " - " +
+                        firmalarDisplay[index].cityName.toString()),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _searchBar() {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(hintText: 'Ara...'),
+        onChanged: (text) {
+          text = text.toLowerCase();
+          setState(() {
+            firmalarDisplay = firmalar.where((note) {
+              var noteTitle = note.companyName.toLowerCase();
+              return noteTitle.contains(text);
+            }).toList();
+          });
+        },
       ),
     );
   }
