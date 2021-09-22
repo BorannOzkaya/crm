@@ -249,7 +249,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       child: RefreshIndicator(
         onRefresh: refreshPage,
         child: FutureBuilder(
-            future: Future.delayed(Duration(seconds: 1)),
+            future: Future.delayed(Duration(milliseconds: 300)),
             builder: (BuildContext context, AsyncSnapshot s) => s
                         .connectionState ==
                     ConnectionState.done
