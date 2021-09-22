@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm/constants.dart';
+import 'package:crm/screens/Call_Screens/toplam_arama.dart';
 import 'package:crm/screens/Home_Page/home.dart';
 import 'package:crm/screens/Home_Page/totalcall_api.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,7 +67,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       var decode = json.decode(response.body);
       // totalCall = decode["data"][0]["total_call_time"];
       decode['data'].forEach((element) => totalCall
@@ -249,78 +250,93 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Bounce(
-                                          duration: Duration(milliseconds: 110),
-                                          onPressed: () {},
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Container(
-                                              height: size.height * 0.20,
-                                              width: size.width * 0.44,
-                                              decoration: BoxDecoration(
+                                        Hero(
+                                          tag: 'hero',
+                                          child: Bounce(
+                                            duration:
+                                                Duration(milliseconds: 110),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ToplamAramalar()));
+                                            },
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  gradient: LinearGradient(
-                                                      begin:
-                                                          Alignment.centerLeft,
-                                                      end:
-                                                          Alignment.centerRight,
-                                                      colors: [
-                                                        Color(0xFF373b44)
-                                                            .withOpacity(0.9),
-                                                        Color(0xFF4286f4)
-                                                            .withOpacity(0.9)
-                                                      ])),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15.0),
-                                                child: Center(
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 10),
-                                                        child: Text(
-                                                          "Toplam Arama \nSaniyesi: \n",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                          height: size.height *
-                                                              0.025),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          Icon(
-                                                              FontAwesomeIcons
-                                                                  .phone,
-                                                              color:
-                                                                  Colors.grey),
-                                                          Text(
-                                                            totalCall[index]
-                                                                .totalCallTime
-                                                                .toString(),
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Container(
+                                                height: size.height * 0.20,
+                                                width: size.width * 0.44,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .centerLeft,
+                                                        end: Alignment
+                                                            .centerRight,
+                                                        colors: [
+                                                          Color(0xFF373b44)
+                                                              .withOpacity(0.9),
+                                                          Color(0xFF4286f4)
+                                                              .withOpacity(0.9)
+                                                        ])),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
+                                                  child: Center(
+                                                    child: Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 10),
+                                                          child: Text(
+                                                            "Toplam Arama \nSaniyesi: \n",
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 20),
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                        ),
+                                                        SizedBox(
+                                                            height:
+                                                                size.height *
+                                                                    0.025),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            Icon(
+                                                                FontAwesomeIcons
+                                                                    .phone,
+                                                                color: Colors
+                                                                    .grey),
+                                                            Text(
+                                                              totalCall[index]
+                                                                  .totalCallTime
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 20),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
