@@ -28,6 +28,7 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   List<StatusDatum> statusCount = [];
   List<CaompanyCallDatum> companyCall = [];
+  List<CaompanyCallDatum> companyCallDisplay = [];
   String toplamDeger = "0";
   getStatusCountList() async {
     var url = Uri.parse(
@@ -467,15 +468,33 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           ),
           Column(
             children: [
+              _searchBar(),
               Container(
                 height: size.height * 0.23,
                 // color: Colors.blue,
                 child: bugunAranacakFirmalar(size),
               ),
-              SizedBox(height: 20)
             ],
           ),
         ]),
+      ),
+    );
+  }
+
+  _searchBar() {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 150),
+      child: TextField(
+        decoration: InputDecoration(hintText: 'Ara...'),
+        onChanged: (text) {
+          text = text.toLowerCase();
+          setState(() {
+            companyCallDisplay = companyCall.where((note) {
+              var noteTitle = note.username.toLowerCase();
+              return noteTitle.contains(text);
+            }).toList();
+          });
+        },
       ),
     );
   }
