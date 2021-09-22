@@ -166,7 +166,7 @@ class _BodyState extends State<Body> {
                   child: Text(
                     "Giriş Yap",
                     style: TextStyle(
-                        color: kPrimaryColor,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   )),

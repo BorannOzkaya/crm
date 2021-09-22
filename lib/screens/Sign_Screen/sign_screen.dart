@@ -10,9 +10,20 @@ class SignInScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "PEN CRM-SR",
-            style: TextStyle(color: kPrimaryColor),
+          title: Column(
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: 'PEN ',
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text('CRM-SR  ',
+                  style: TextStyle(color: Colors.white, fontSize: 15))
+            ],
           ),
           centerTitle: true,
           automaticallyImplyLeading: false,

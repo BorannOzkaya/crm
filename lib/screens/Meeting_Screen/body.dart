@@ -18,7 +18,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   List<Firmalar>? firmalar;
-  List<CaompanyCallDatum>? companyCall;
+  List<CaompanyCallDatum> companyCall = [];
 
   DateTime dateToday =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -38,17 +38,37 @@ class _BodyState extends State<Body> {
 
   getCompanyCallList() async {
     var url = Uri.parse(
-        'https://crmsr.pen.com.tr/api/company_interview/getallbydate');
+        'https://crmsr.pen.com.tr/api/company-interview/getlistbydate');
     final msg = jsonEncode({"interview_date": dateToday.toIso8601String()});
     var response = await http.post(url,
         body: msg,
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      // print(response.body);
+      //print(response.body);
       var decode = jsonDecode(response.body);
-      companyCall =
-          statusCompanyCallApiDatasFromJson(jsonEncode(decode["data"]!));
+      decode["data"].forEach((element) => companyCall.add(CaompanyCallDatum(
+            statusId: element['status_id'],
+            callTime: element['call_time'],
+            companyId: element['company_id'],
+            companyName: element['company_name'],
+            countryCode: element['country_code'],
+            countryName: element['country_name'],
+            createdDate: element['created_date'],
+            createdId: element['created_id'],
+            deletedDate: element['created_date'],
+            deletedId: element['deleted_id'],
+            formattedDatetime: element['formatted_datetime'],
+            gsm: element['gsm'],
+            email: element['email'],
+            id: element['id'],
+            interviewDate: element['interview_date'],
+            isActive: element['is_active'],
+            isCallBack: element['is_call_back'],
+            // isMailSend: element['is_mail_send'],
+            username: element['username'],
+            name: element['name'],
+          )));
     } else {
       print(response.reasonPhrase);
     }
@@ -106,74 +126,126 @@ class _BodyState extends State<Body> {
           child: FutureBuilder(
               future: Future.delayed(Duration(seconds: 1)),
               builder: (BuildContext context, s) {
-                if (s.hasData) {
-                  return s.connectionState == ConnectionState.done
-                      ? ListView.builder(
-                          itemCount: companyCall!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Container(
-                                  height: size.height * 0.15,
-                                  color: kPrimaryLightColor,
-                                  child: Stack(
-                                    alignment: Alignment.topCenter,
-                                    children: [
-                                      Positioned(
-                                        top: 5,
-                                        child: ClipRRect(
+                return s.connectionState == ConnectionState.done
+                    ? ListView.builder(
+                        itemCount: companyCall.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                height: size.height * 0.20,
+                                color: kPrimaryLightColor,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            colors: [
+                                          kPrimaryColor,
+                                          Color(0xFF284269)
+                                        ])),
+                                    child: Card(
+                                      shape: new RoundedRectangleBorder(
+                                          side: new BorderSide(
+                                              color: Colors.white, width: 2.0),
                                           borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Container(
-                                            height: size.height * 0.17,
-                                            width: size.width * 0.51,
-                                            color: kPrimaryLightColor,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    companyCall![index]
-                                                        .companyName,
-                                                    style: TextStyle(
-                                                        fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  SizedBox(height: 7),
-                                                  Text(
-                                                    companyCall![index].email,
-                                                    style: TextStyle(
-                                                        color: Colors.grey),
-                                                  ),
-                                                  SizedBox(height: 7),
-                                                  Text(companyCall![index]
-                                                      .formattedDatetime)
-                                                ],
-                                              ),
+                                              BorderRadius.circular(30.0)),
+                                      color: kPrimaryLightColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 7),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.person,
+                                                  color: Color(0xFF284269),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(
+                                                  companyCall[index].username,
+                                                  style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
                                             ),
-                                          ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.language,
+                                                  color: Color(0xFF284269),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(
+                                                  companyCall[index]
+                                                      .companyName,
+                                                ),
+                                                SizedBox(width: 7),
+                                                Icon(
+                                                  Icons.phone,
+                                                  size: 20,
+                                                  color: Color(0xFF284269),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(
+                                                  "+" +
+                                                      companyCall[index]
+                                                          .countryCode +
+                                                      " " +
+                                                      companyCall[index].gsm,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 7),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.mail_outline,
+                                                  color: Color(0xFF284269),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(
+                                                  companyCall[index].email,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 7),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.date_range_outlined,
+                                                  color: Color(0xFF284269),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(companyCall[index]
+                                                    .formattedDatetime),
+                                                SizedBox(height: 7),
+                                              ],
+                                            )
+                                          ],
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            );
-                          })
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        );
-                } else {
-                  return Center(
-                    child: Text("Veri Bulunmamaktadır."),
-                  );
-                }
+                            ),
+                          );
+                        })
+                    : Center(
+                        child: CircularProgressIndicator(color: kPrimaryColor),
+                      );
               }),
         ),
       ],

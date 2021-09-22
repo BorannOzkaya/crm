@@ -10,7 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 
@@ -57,11 +56,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     }
   }
 
+  bool nullCheck = false;
+
   List<TotalCallDatum> totalCall = [];
   getTotalCall() async {
     var url = Uri.parse(
         'https://crmsr.pen.com.tr/api/company-interview/gettotalcalltime');
-    final msg = json.encode({"status_id": 1, "is_admin": true});
+    final msg = json.encode({});
     var response = await http.post(url,
         body: msg,
         headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
@@ -72,19 +73,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       // totalCall = decode["data"][0]["total_call_time"];
       decode['data'].forEach((element) => totalCall
           .add(TotalCallDatum(totalCallTime: element['total_call_time'])));
-      print(totalCall);
     } else {
       print(response.reasonPhrase);
     }
   }
 
-  getCompanyCallList() async {
+  getCompanyCallList(String date, int ownerId, bool admincontrol) async {
     var url = Uri.parse(
-        'https://crmsr.pen.com.tr/api/company_interview/getallbydate');
+        'https://crmsr.pen.com.tr/api/company-interview/getallinterviewsbyfirsttwostatus');
     final msg = jsonEncode({
-      "interview_date": dateToday.toIso8601String(),
-      "is_Admin": true,
-      "owner_id": 1
+      "interview_date": date,
+      "is_Admin": admincontrol,
+      "owner_id": ownerId
     });
     var response = await http.post(url,
         body: msg,
@@ -92,17 +92,36 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     if (response.statusCode == 200) {
       //print(response.body);
+      nullCheck = true;
       var decode = jsonDecode(response.body);
-      companyCall =
-          statusCompanyCallApiDatasFromJson(jsonEncode(decode["data"]!));
+      decode['data'].forEach((element) => companyCall.add(CaompanyCallDatum(
+            statusId: element['status_id'],
+            companyId: element['company_id'],
+            callTime: element['call_time'],
+            companyName: element['company_name'],
+            countryCode: element['country_code'],
+            countryName: element['country_name'],
+            createdDate: element['created_date'],
+            createdId: element['created_id'],
+            deletedDate: element['deleted_date'],
+            deletedId: element['deleted_id'],
+            email: element['email'],
+            formattedDatetime: element['formatted_datetime'],
+            gsm: element['gsm'],
+            id: element['id'],
+            interviewDate: element['interview_date'],
+            isActive: element['is_active'],
+            isCallBack: element['is_call_back'],
+            name: element['name'],
+            username: element['username'],
+          )));
     } else {
       //print(response.reasonPhrase);
     }
   }
 
   bool isLoading = false;
-  DateTime dateToday =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime dateToday = DateTime.now();
 
   Future<Null> refreshPage() async {
     await Future.delayed(Duration(milliseconds: 500));
@@ -121,11 +140,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         isLoading = true;
       });
     });
-    getCompanyCallList().whenComplete(() {
-      setState(() {
-        isLoading = true;
+    if (admincontroller == true) {
+      getCompanyCallList(dateToday.toIso8601String(), 0, true).whenComplete(() {
+        setState(() {
+          isLoading = true;
+        });
       });
-    });
+    } else {
+      getCompanyCallList(
+              dateToday.toIso8601String(), useridcomponent, admincontroller)
+          .whenComplete(() {
+        setState(() {
+          isLoading = true;
+        });
+      });
+    }
+
     getTotalCall().whenComplete(() {
       setState(() {
         isLoading = true;
@@ -136,7 +166,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   void dispose() {
     assert(() {
-      getCompanyCallList();
+      getCompanyCallList(
+          dateToday.toIso8601String(), useridcomponent, admincontroller);
       return true;
     }());
     super.dispose();
@@ -324,15 +355,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                                     .phone,
                                                                 color: Colors
                                                                     .grey),
-                                                            Text(
-                                                              totalCall[index]
-                                                                  .totalCallTime
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 20),
-                                                            ),
+                                                            totalcalltext(index)
                                                           ],
                                                         )
                                                       ],
@@ -421,93 +444,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                     );
                                   }),
                               SizedBox(height: 15),
-                              GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: ScrollPhysics(),
-                                  itemCount: statusCount.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 31),
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: Bounce(
-                                        duration: Duration(milliseconds: 110),
-                                        onPressed: () {},
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight,
-                                                    colors: [
-                                                      data[index]
-                                                          ["backgroundcolor1"],
-                                                      data[index]
-                                                          ["backgroundcolor2"]
-                                                    ])),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 50),
-                                                  child: Text(
-                                                    data[index]["text"],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height: size.height * 0.03),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20, right: 20),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      Icon(
-                                                        data[index]["icon"],
-                                                        color: data[index]
-                                                            ["color"],
-                                                      ),
-                                                      Text(
-                                                        // data[index]["text2"],
-                                                        statusCount[index]
-                                                            .count
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 24),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
+                              gridviewCount(size),
                             ],
                           )
                         : Center(
-                            child: CircularProgressIndicator(),
+                            child:
+                                CircularProgressIndicator(color: kPrimaryColor),
                           );
                     // } else {
                     //   return Center(child: Text("Veri Bulunmamaktadır."));
@@ -516,127 +458,19 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ],
           ),
           SizedBox(height: size.height * 0.03),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Bugün Aranacak Firmalar",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    DatePicker.showDateTimePicker(context,
-                        showTitleActions: true, onChanged: (date) {
-                      print('change $date in time zone ' +
-                          date.timeZoneOffset.inHours.toString());
-                    }, onConfirm: (date) {
-                      setState(() {
-                        dateStatus = "${date.year}" +
-                            "-" +
-                            "0${date.month}" +
-                            "-" +
-                            "0${date.day}";
-                        getCompanyCallList();
-                      });
-
-                      print('confirm $date');
-                    }, currentTime: DateTime.now());
-                  },
-                  icon: Icon(Icons.date_range)),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Bugün Aranacak Firmalar",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
           Column(
             children: [
               Container(
                 height: size.height * 0.23,
                 // color: Colors.blue,
-                child: FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 1)),
-                    builder: (BuildContext context, AsyncSnapshot s) => s
-                                .connectionState ==
-                            ConnectionState.done
-                        ? ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: companyCall.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              if (companyCall.length == 0) {
-                                return Expanded(child: Text("Veri yok"));
-                              } else {
-                                return Container(
-                                  margin: EdgeInsets.all(10),
-                                  width: 210,
-                                  // color: Colors.red,
-                                  child: Stack(
-                                    alignment: Alignment.topCenter,
-                                    children: [
-                                      Positioned(
-                                        top: 5,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              var number =
-                                                  companyCall[index].gsm;
-                                              phonenumber = number;
-                                              _launchUrl();
-                                            },
-                                            child: Container(
-                                              height: size.height * 0.17,
-                                              width: size.width * 0.51,
-                                              decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                      begin:
-                                                          Alignment.centerLeft,
-                                                      end:
-                                                          Alignment.centerRight,
-                                                      colors: [
-                                                    kPrimaryLightColor,
-                                                    kPrimaryColor
-                                                        .withOpacity(0.5)
-                                                  ])),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      companyCall[index]
-                                                          .companyName,
-                                                      style: TextStyle(
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(height: 7),
-                                                    Text(
-                                                      companyCall[index].email,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                    SizedBox(height: 7),
-                                                    Text(companyCall[index]
-                                                        .formattedDatetime)
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            })
-                        : Center(
-                            child: CircularProgressIndicator(),
-                          )),
+                child: bugunAranacakFirmalar(size),
               ),
               SizedBox(height: 20)
             ],
@@ -644,6 +478,275 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         ]),
       ),
     );
+  }
+
+  bugunAranacakFirmalar(Size size) {
+    if (companyCall.length > 0) {
+      return FutureBuilder(
+          future: Future.delayed(Duration(seconds: 1)),
+          builder: (BuildContext context, AsyncSnapshot s) =>
+              s.connectionState == ConnectionState.done
+                  ? ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: companyCall.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (companyCall.length == 0) {
+                          return Expanded(child: Text("Veri yok"));
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.all(10),
+                            width: 210,
+                            // color: Colors.red,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Positioned(
+                                  top: 5,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        var number = companyCall[index].gsm;
+                                        phonenumber = number;
+                                        _launchUrl();
+                                      },
+                                      child: Container(
+                                        height: size.height * 0.17,
+                                        width: size.width * 0.51,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                              kPrimaryLightColor,
+                                              kPrimaryColor.withOpacity(0.5)
+                                            ])),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    FontAwesomeIcons.building,
+                                                    color: Color(0xFF284269),
+                                                  ),
+                                                  SizedBox(width: 7),
+                                                  Expanded(
+                                                    child: Text(
+                                                      companyCall[index]
+                                                          .companyName,
+                                                      style: TextStyle(
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 7),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.mail_outline_outlined,
+                                                    color: Color(0xFF284269),
+                                                  ),
+                                                  SizedBox(width: 7),
+                                                  Expanded(
+                                                    child: Text(
+                                                      companyCall[index].email,
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 7),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.date_range_outlined,
+                                                    color: Color(0xFF284269),
+                                                  ),
+                                                  SizedBox(width: 7),
+                                                  Expanded(
+                                                    child: Text(
+                                                        companyCall[index]
+                                                            .formattedDatetime),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      })
+                  : Center(
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ),
+                    ));
+    } else {
+      return Center(child: Text("Herhangi Bir Veri Bulunmamaktadır."));
+    }
+  }
+
+  GridView gridviewCount(Size size) {
+    if (statusCount.length > 0) {
+      return GridView.builder(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemCount: statusCount.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, crossAxisSpacing: 31),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Bounce(
+                duration: Duration(milliseconds: 110),
+                onPressed: () {},
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              data[index]["backgroundcolor1"],
+                              data[index]["backgroundcolor2"]
+                            ])),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50),
+                          child: Text(
+                            data[index]["text"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.03),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(
+                                data[index]["icon"],
+                                color: data[index]["color"],
+                              ),
+                              // statusCount == null
+                              Text(
+                                // data[index]["text2"],
+                                statusCount[index].count.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 24),
+                              )
+                              // : Text("0")
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+    } else {
+      return GridView.builder(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemCount: 5,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, crossAxisSpacing: 31),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Bounce(
+                duration: Duration(milliseconds: 110),
+                onPressed: () {},
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              data[index]["backgroundcolor1"],
+                              data[index]["backgroundcolor2"]
+                            ])),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50),
+                          child: Text(
+                            data[index]["text"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.03),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(
+                                data[index]["icon"],
+                                color: data[index]["color"],
+                              ),
+                              Text(
+                                "0",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 24),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+  }
+
+  Text totalcalltext(int index) {
+    if (totalCall.length > 0) {
+      return Text(
+        totalCall[index].totalCallTime.toString(),
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      );
+    } else {
+      return Text(
+        "0",
+        style: TextStyle(color: Colors.white, fontSize: 25),
+      );
+    }
   }
 
   var phonenumber;

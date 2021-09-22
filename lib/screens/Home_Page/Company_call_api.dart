@@ -43,7 +43,7 @@ class CaompanyCallDatum {
     required this.id,
     required this.companyId,
     required this.statusId,
-    required this.isMailSend,
+    // required this.isMailSend,
     required this.isCallBack,
     required this.interviewDate,
     required this.callTime,
@@ -65,8 +65,8 @@ class CaompanyCallDatum {
   int id;
   int companyId;
   int statusId;
-  bool isMailSend;
-  bool isCallBack;
+  // bool isMailSend;
+  bool? isCallBack;
   String interviewDate;
   int callTime;
   int createdId;
@@ -88,7 +88,7 @@ class CaompanyCallDatum {
         id: json["id"],
         companyId: json["company_id"],
         statusId: json["status_id"],
-        isMailSend: json["is_mail_send"],
+        // isMailSend: json["is_mail_send"],
         isCallBack: json["is_call_back"],
         interviewDate: json["interview_date"],
         callTime: json["call_time"],
@@ -111,7 +111,7 @@ class CaompanyCallDatum {
         "id": id,
         "company_id": companyId,
         "status_id": statusId,
-        "is_mail_send": isMailSend,
+        // "is_mail_send": isMailSend,
         "is_call_back": isCallBack,
         "interview_date": interviewDate,
         "call_time": callTime,
