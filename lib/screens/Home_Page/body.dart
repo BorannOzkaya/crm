@@ -248,128 +248,53 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       onWillPop: () async => false,
       child: RefreshIndicator(
         onRefresh: refreshPage,
-        child: ListView(children: [
-          Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15, left: 15),
-                child: Text(
-                  'Anasayfa',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Column(
-            children: [
-              FutureBuilder(
-                  future: Future.delayed(Duration(seconds: 1)),
-                  builder: (BuildContext context, s) {
-                    // if (s.hasData) {
-                    return s.connectionState == ConnectionState.done
-                        ? Column(
-                            children: [
-                              ListView.builder(
-                                  itemCount: 1,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Hero(
-                                          tag: 'hero',
-                                          child: Bounce(
-                                            duration:
-                                                Duration(milliseconds: 110),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ToplamAramalar()));
-                                            },
-                                            child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: Container(
-                                                height: size.height * 0.20,
-                                                width: size.width * 0.44,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    gradient: LinearGradient(
-                                                        begin: Alignment
-                                                            .centerLeft,
-                                                        end: Alignment
-                                                            .centerRight,
-                                                        colors: [
-                                                          Color(0xFF373b44)
-                                                              .withOpacity(0.9),
-                                                          Color(0xFF4286f4)
-                                                              .withOpacity(0.9)
-                                                        ])),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      15.0),
-                                                  child: Center(
-                                                    child: Column(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 10),
-                                                          child: Text(
-                                                            "Toplam Arama \nSaniyesi: \n",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                            height:
-                                                                size.height *
-                                                                    0.025),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: [
-                                                            Icon(
-                                                                FontAwesomeIcons
-                                                                    .phone,
-                                                                color: Colors
-                                                                    .grey),
-                                                            totalcalltext(index)
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Bounce(
+        child: FutureBuilder(
+            future: Future.delayed(Duration(seconds: 1)),
+            builder: (BuildContext context, AsyncSnapshot s) => s
+                        .connectionState ==
+                    ConnectionState.done
+                ? ListView(children: [
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 15),
+                          child: Text(
+                            'Anasayfa',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      children: [
+                        Column(
+                          children: [
+                            ListView.builder(
+                                itemCount: 1,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, index) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Hero(
+                                        tag: 'hero',
+                                        child: Bounce(
                                           duration: Duration(milliseconds: 110),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ToplamAramalar()));
+                                          },
                                           child: Card(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -386,35 +311,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                       end:
                                                           Alignment.centerRight,
                                                       colors: [
-                                                        Color(0xFF289cf5)
+                                                        Color(0xFF373b44)
                                                             .withOpacity(0.9),
-                                                        Color(0xFF84c0ec)
+                                                        Color(0xFF4286f4)
                                                             .withOpacity(0.9)
                                                       ])),
                                               child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 30),
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Toplam Aramalar: \n",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    SizedBox(
-                                                        height:
-                                                            size.height * 0.03),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20,
-                                                              right: 20),
-                                                      child: Row(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 10),
+                                                        child: Text(
+                                                          "Toplam Arama \nSaniyesi: \n",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                          height: size.height *
+                                                              0.025),
+                                                      Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceAround,
@@ -424,59 +352,121 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                                   .phone,
                                                               color:
                                                                   Colors.grey),
-                                                          Text(
-                                                            (toplamDeger)
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 24),
-                                                          ),
+                                                          totalcalltext(index)
                                                         ],
-                                                      ),
-                                                    )
-                                                  ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    );
-                                  }),
-                              SizedBox(height: 15),
-                              gridviewCount(size),
-                            ],
-                          )
-                        : Center(
-                            child:
-                                CircularProgressIndicator(color: kPrimaryColor),
-                          );
-                    // } else {
-                    //   return Center(child: Text("Veri Bulunmamaktadır."));
-                    // }
-                  }),
-            ],
-          ),
-          SizedBox(height: size.height * 0.03),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Bugün Aranacak Firmalar",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Column(
-            children: [
-              _searchBar(),
-              Container(
-                height: size.height * 0.23,
-                // color: Colors.blue,
-                child: bugunAranacakFirmalar(size),
-              ),
-            ],
-          ),
-        ]),
+                                        ),
+                                      ),
+                                      Bounce(
+                                        duration: Duration(milliseconds: 110),
+                                        onPressed: () {},
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Container(
+                                            height: size.height * 0.20,
+                                            width: size.width * 0.44,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    colors: [
+                                                      Color(0xFF289cf5)
+                                                          .withOpacity(0.9),
+                                                      Color(0xFF84c0ec)
+                                                          .withOpacity(0.9)
+                                                    ])),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 30),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Toplam Aramalar: \n",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          size.height * 0.03),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Icon(
+                                                            FontAwesomeIcons
+                                                                .phone,
+                                                            color: Colors.grey),
+                                                        Text(
+                                                          (toplamDeger)
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 24),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }),
+                            SizedBox(height: 15),
+                            gridviewCount(size),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Bugün Aranacak Firmalar",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        _searchBar(),
+                        Container(
+                          height: size.height * 0.23,
+                          // color: Colors.blue,
+                          child: bugunAranacakFirmalar(size),
+                        ),
+                      ],
+                    ),
+                  ])
+                : Center(
+                    child: CircularProgressIndicator(
+                      color: kPrimaryColor,
+                    ),
+                  )),
       ),
     );
   }
@@ -501,119 +491,105 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   bugunAranacakFirmalar(Size size) {
     if (companyCall.length > 0) {
-      return FutureBuilder(
-          future: Future.delayed(Duration(seconds: 1)),
-          builder: (BuildContext context, AsyncSnapshot s) =>
-              s.connectionState == ConnectionState.done
-                  ? ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: companyCall.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (companyCall.length == 0) {
-                          return Expanded(child: Text("Veri yok"));
-                        } else {
-                          return Container(
-                            margin: EdgeInsets.all(10),
-                            width: 210,
-                            // color: Colors.red,
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Positioned(
-                                  top: 5,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        var number = companyCall[index].gsm;
-                                        phonenumber = number;
-                                        _launchUrl();
-                                      },
-                                      child: Container(
-                                        height: size.height * 0.17,
-                                        width: size.width * 0.51,
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                              kPrimaryLightColor,
-                                              kPrimaryColor.withOpacity(0.5)
-                                            ])),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    FontAwesomeIcons.building,
-                                                    color: Color(0xFF284269),
-                                                  ),
-                                                  SizedBox(width: 7),
-                                                  Expanded(
-                                                    child: Text(
-                                                      companyCall[index]
-                                                          .companyName,
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.mail_outline_outlined,
-                                                    color: Color(0xFF284269),
-                                                  ),
-                                                  SizedBox(width: 7),
-                                                  Expanded(
-                                                    child: Text(
-                                                      companyCall[index].email,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.date_range_outlined,
-                                                    color: Color(0xFF284269),
-                                                  ),
-                                                  SizedBox(width: 7),
-                                                  Expanded(
-                                                    child: Text(
-                                                        companyCall[index]
-                                                            .formattedDatetime),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
+      return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: companyCall.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (companyCall.length == 0) {
+              return Expanded(child: Text("Veri yok"));
+            } else {
+              return Container(
+                margin: EdgeInsets.all(10),
+                width: 210,
+                // color: Colors.red,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Positioned(
+                      top: 5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: GestureDetector(
+                          onTap: () {
+                            var number = companyCall[index].gsm;
+                            phonenumber = number;
+                            _launchUrl();
+                          },
+                          child: Container(
+                            height: size.height * 0.17,
+                            width: size.width * 0.51,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                  kPrimaryLightColor,
+                                  kPrimaryColor.withOpacity(0.5)
+                                ])),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.building,
+                                        color: Color(0xFF284269),
+                                      ),
+                                      SizedBox(width: 7),
+                                      Expanded(
+                                        child: Text(
+                                          companyCall[index].companyName,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 7),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.mail_outline_outlined,
+                                        color: Color(0xFF284269),
+                                      ),
+                                      SizedBox(width: 7),
+                                      Expanded(
+                                        child: Text(
+                                          companyCall[index].email,
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.date_range_outlined,
+                                        color: Color(0xFF284269),
+                                      ),
+                                      SizedBox(width: 7),
+                                      Expanded(
+                                        child: Text(companyCall[index]
+                                            .formattedDatetime),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                          );
-                        }
-                      })
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: kPrimaryColor,
+                          ),
+                        ),
                       ),
-                    ));
+                    ),
+                  ],
+                ),
+              );
+            }
+          });
     } else {
       return Center(child: Text("Herhangi Bir Veri Bulunmamaktadır."));
     }
