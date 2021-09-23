@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../constants.dart';
 import '../../wave_widget.dart';
@@ -131,77 +132,51 @@ class _BodyState extends State<Body> {
                 // ignore: deprecated_member_use
                 child: FlatButton(
                     onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(60.0))),
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Yönlendiriliyor...",
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          TextStyle(color: Color(0xFF284269)),
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: Color(0xFF284269),
-                                        ))
-                                  ],
-                                ),
-                                content: Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Center(
-                                        child: CircularProgressIndicator(
-                                            color: kPrimaryColor))));
-                          });
                       getLogin(_usernameController.text,
                               _passwordController.text)
                           .whenComplete(() {
                         if (status == true) {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return HomePage(
-                              token: tokencomponent,
-                            );
-                          }));
-                        } else {
-                          showDialog(
+                          AwesomeDialog(
                               context: context,
-                              builder: (BuildContext context) {
-                                return FutureBuilder(
-                                  future: Future.delayed(Duration(seconds: 1)),
-                                  builder: (c, s) => s.connectionState ==
-                                          ConnectionState.done
-                                      ? AlertDialog(
-                                          title: Text("Başarısız"),
-                                          content: TextButton(
-                                              onPressed: () {
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(builder:
-                                                        (BuildContext context) {
-                                                  return SignInScreen();
-                                                }));
-                                                //Navigator.pop(context);
-                                              },
-                                              child: Text("OK")),
-                                        )
-                                      : Center(
-                                          child: CircularProgressIndicator()),
+                              animType: AnimType.LEFTSLIDE,
+                              headerAnimationLoop: false,
+                              dialogType: DialogType.SUCCES,
+                              showCloseIcon: true,
+                              btnOkText: 'Tamam',
+                              title: 'Giriş Başarılı',
+                              btnOkOnPress: () {
+                                debugPrint('OnClcik');
+                              },
+                              btnOkIcon: Icons.check_circle,
+                              onDissmissCallback: (type) {
+                                debugPrint(
+                                    'Dialog Dissmiss from callback $type');
+                              })
+                            ..show().whenComplete(() {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return HomePage(
+                                  token: tokencomponent,
                                 );
-                              });
-                          setState(() {});
-                          print("Giriş Başarısız");
+                              }));
+                            });
+                        } else {
+                          AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              headerAnimationLoop: true,
+                              animType: AnimType.TOPSLIDE,
+                              showCloseIcon: false,
+                              btnOkColor: Colors.red,
+                              btnOkText: 'Tamam',
+                              title: 'Hata',
+                              desc: 'Kullanıcı Adı veya Şifre Hatalı',
+                              onDissmissCallback: (type) {
+                                debugPrint(
+                                    'Dialog Dissmiss from callback $type');
+                              },
+                              btnOkOnPress: () {})
+                            ..show();
                         }
                       });
                     },
