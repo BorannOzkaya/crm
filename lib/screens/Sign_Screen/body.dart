@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
 import '../../constants.dart';
+import '../../wave_widget.dart';
 import 'sign_screen.dart';
 
 class Body extends StatefulWidget {
@@ -75,105 +76,139 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: Text(
-              "Hesabınıza Giriş Yapınız",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+    final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    return Stack(
+      children: <Widget>[
+        Container(height: size.height - 200, color: Color(0xFF284269)),
+        AnimatedPositioned(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOutQuad,
+          top: keyboardOpen ? -size.height / 3.7 : 0.0,
+          child: WaveWidget(
+            size: size,
+            yOffset: size.height / 3.0,
+            color: Colors.white,
           ),
-          SizedBox(height: 125),
-          UserNameTextFormField(
-              size: size, usernameController: _usernameController),
-          PasswordTextFormField(
-              size: size, passwordController: _passwordController),
-          SizedBox(height: 30),
-          Container(
-            width: size.width * 0.8,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(29),
-              // ignore: deprecated_member_use
-              child: FlatButton(
-                  onPressed: () async {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Yönlendiriliyor..."),
-                                  IconButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      icon: Icon(Icons.close))
-                                ],
-                              ),
-                              content: Container(
-                                  height: 50,
-                                  width: 50,
-                                  child: Center(
-                                      child: CircularProgressIndicator(
-                                          color: kPrimaryColor))));
-                        });
-                    getLogin(_usernameController.text, _passwordController.text)
-                        .whenComplete(() {
-                      if (status == true) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return HomePage(
-                            token: tokencomponent,
-                          );
-                        }));
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return FutureBuilder(
-                                future: Future.delayed(Duration(seconds: 1)),
-                                builder: (c, s) => s.connectionState ==
-                                        ConnectionState.done
-                                    ? AlertDialog(
-                                        title: Text("Başarısız"),
-                                        content: TextButton(
-                                            onPressed: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder:
-                                                      (BuildContext context) {
-                                                return SignInScreen();
-                                              }));
-                                              //Navigator.pop(context);
-                                            },
-                                            child: Text("OK")),
-                                      )
-                                    : Center(
-                                        child: CircularProgressIndicator()),
-                              );
-                            });
-                        setState(() {});
-                        print("Giriş Başarısız");
-                      }
-                    });
-                  },
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                  color: Color(0xFF284269),
-                  child: Text(
-                    "Giriş Yap",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )),
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 100.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: 'PEN',
+                      style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text('CRM-SR',
+                      style: TextStyle(color: Colors.white, fontSize: 45))
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            UserNameTextFormField(
+                size: size, usernameController: _usernameController),
+            PasswordTextFormField(
+                size: size, passwordController: _passwordController),
+            SizedBox(
+              height: 10.0,
+            ),
+            SizedBox(height: 20.0),
+            Container(
+              width: size.width * 0.8,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(29),
+                // ignore: deprecated_member_use
+                child: FlatButton(
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Yönlendiriliyor..."),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(Icons.close))
+                                  ],
+                                ),
+                                content: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                            color: kPrimaryColor))));
+                          });
+                      getLogin(_usernameController.text,
+                              _passwordController.text)
+                          .whenComplete(() {
+                        if (status == true) {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return HomePage(
+                              token: tokencomponent,
+                            );
+                          }));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return FutureBuilder(
+                                  future: Future.delayed(Duration(seconds: 1)),
+                                  builder: (c, s) => s.connectionState ==
+                                          ConnectionState.done
+                                      ? AlertDialog(
+                                          title: Text("Başarısız"),
+                                          content: TextButton(
+                                              onPressed: () {
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                                  return SignInScreen();
+                                                }));
+                                                //Navigator.pop(context);
+                                              },
+                                              child: Text("OK")),
+                                        )
+                                      : Center(
+                                          child: CircularProgressIndicator()),
+                                );
+                              });
+                          setState(() {});
+                          print("Giriş Başarısız");
+                        }
+                      });
+                    },
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                    color: Color(0xFF284269),
+                    child: Text(
+                      "Giriş Yap",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )),
+              ),
+            ),
+            SizedBox(height: 20.0),
+          ],
+        ),
+      ],
     );
   }
 }
