@@ -135,16 +135,27 @@ class _BodyState extends State<Body> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(60.0))),
                                 title: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Yönlendiriliyor..."),
+                                    Text(
+                                      "Yönlendiriliyor...",
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          TextStyle(color: Color(0xFF284269)),
+                                    ),
                                     IconButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        icon: Icon(Icons.close))
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: Color(0xFF284269),
+                                        ))
                                   ],
                                 ),
                                 content: Container(

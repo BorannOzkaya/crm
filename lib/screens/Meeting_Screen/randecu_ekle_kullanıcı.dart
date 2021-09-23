@@ -100,7 +100,9 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                 Text("Firma İsmi Arayın ve Seçmek için basılı tutun"),
                 SizedBox(height: 20),
                 SingleChildScrollView(
-                    child: Container(
+                    child: Column(
+                  children: [
+                    Container(
                         height: size.height * 0.55,
                         //color: Colors.blue,
                         child: ListView.builder(
@@ -109,7 +111,17 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                               return index == 0
                                   ? _searchBar()
                                   : _listItem(index - 1);
-                            }))),
+                            })),
+                    // Container(
+                    //     height: size.height * 0.55,
+                    //     //color: Colors.blue,
+                    //     child: ListView.builder(
+                    //         itemCount: firmalarDisplay.length + 1,
+                    //         itemBuilder: (context, index) {
+                    //           return _searchBar2();
+                    //         })),
+                  ],
+                )),
 
                 SizedBox(height: 30),
                 // ignore: deprecated_member_use
@@ -158,7 +170,7 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
 
   _searchBar() {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(left: 20, right: 150),
       child: TextField(
         decoration: InputDecoration(hintText: 'Ara...'),
         onChanged: (text) {
@@ -168,6 +180,24 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
               var noteTitle = note.companyName.toLowerCase();
               return noteTitle.contains(text);
             }).toList();
+          });
+        },
+      ),
+    );
+  }
+
+  _searchBar2() {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 150),
+      child: TextField(
+        decoration: InputDecoration(hintText: 'Ara...'),
+        onChanged: (text) {
+          text = text.toLowerCase();
+          setState(() {
+            // companyCallDisplay = companyCall.where((note) {
+            //   var noteTitle = note.username.toLowerCase();
+            //   return noteTitle.contains(text);
+            // }).toList();
           });
         },
       ),
