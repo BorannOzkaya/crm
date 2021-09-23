@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm/screens/Companies_Screen/company_api.dart';
+import 'package:crm/screens/Meeting_Screen/Users_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ class RandevuEkleKullanici extends StatefulWidget {
 class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
   List<Firmalar> firmalar = <Firmalar>[];
   List<Firmalar> firmalarDisplay = <Firmalar>[];
+
   getFirmalarList() async {
     var url = Uri.parse('https://crmsr.pen.com.tr/api/Company/Getlist');
     var response = await http.post(url, headers: {'token': tokencomponent});
@@ -25,6 +27,38 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
       //print(response.body);
       var decode = jsonDecode(response.body);
       firmalar = firmalarFromJson(jsonEncode(decode["data"]));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  List<UsersDatum> users = <UsersDatum>[];
+  List<UsersDatum> usersDisplay = <UsersDatum>[];
+
+  getUsers() async {
+    var url =
+        Uri.parse('https://crmsr.pen.com.tr/api/person/getlistwithoutadmins');
+    var response = await http.post(url, headers: {'token': tokencomponent});
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      var decode = jsonDecode(response.body);
+      decode["data"].forEach((element) => users.add(UsersDatum(
+          id: element['id'],
+          // createdDate: element['created_date'],
+          // createdId: element['created_id'],
+          // deletedDate: element['deleted_date'],
+          email: element['email'],
+          // deletedId: element['deleted_is'],
+          password: element['password'],
+          isActive: element['is_active'],
+          surname: element['surname'],
+          gsm: element['gsm'],
+          isAdmin: element['is_admin'],
+          genderId: element['gender_id'],
+          name: element['name'],
+          // token: element['token'],
+          username: element['username'])));
     } else {
       print(response.reasonPhrase);
     }
@@ -56,10 +90,18 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
         firmalarDisplay = firmalar;
       });
     });
+    getUsers().then((value) {
+      setState(() {
+        users.addAll(value);
+        usersDisplay = users;
+      });
+    });
   }
 
   int selectedIndex = 0;
+  int selectedIndex2 = 0;
   bool selected = false;
+  bool selected2 = false;
   String? dateValue;
 
   @override
@@ -100,10 +142,8 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                 Text("Firma İsmi Arayın ve Seçmek için basılı tutun"),
                 SizedBox(height: 20),
                 SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    Container(
-                        height: size.height * 0.55,
+                    child: Container(
+                        height: size.height * 0.30,
                         //color: Colors.blue,
                         child: ListView.builder(
                             itemCount: firmalarDisplay.length + 1,
@@ -111,19 +151,18 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                               return index == 0
                                   ? _searchBar()
                                   : _listItem(index - 1);
-                            })),
-                    // Container(
-                    //     height: size.height * 0.55,
-                    //     //color: Colors.blue,
-                    //     child: ListView.builder(
-                    //         itemCount: firmalarDisplay.length + 1,
-                    //         itemBuilder: (context, index) {
-                    //           return _searchBar2();
-                    //         })),
-                  ],
-                )),
-
+                            }))),
                 SizedBox(height: 30),
+                Container(
+                    height: size.height * 0.30,
+                    //color: Colors.blue,
+                    child: ListView.builder(
+                        itemCount: usersDisplay.length + 1,
+                        itemBuilder: (context, index2) {
+                          return index2 == 0
+                              ? _searchBar2()
+                              : _listItem2(index2 - 1);
+                        })),
                 // ignore: deprecated_member_use
                 Container(
                   width: size.width * 0.6,
@@ -194,10 +233,10 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            // companyCallDisplay = companyCall.where((note) {
-            //   var noteTitle = note.username.toLowerCase();
-            //   return noteTitle.contains(text);
-            // }).toList();
+            usersDisplay = users.where((note) {
+              var noteTitle = note.username.toLowerCase();
+              return noteTitle.contains(text);
+            }).toList();
           });
         },
       ),
@@ -251,6 +290,52 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                   Text(firmalarDisplay[index].email),
                   Text(firmalarDisplay[index].gsm)
                 ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  GestureDetector _listItem2(index) {
+    return GestureDetector(
+        onLongPress: () {
+          setState(() {
+            selectedIndex2 = usersDisplay[index].id;
+            selected2 = true;
+            print(selectedIndex2);
+            FocusScope.of(context).unfocus();
+          });
+          // ignore: deprecated_member_use
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    "${usersDisplay[index].username} kullanıcısı seçildi",
+                    textAlign: TextAlign.center,
+                  ),
+                  content: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("OK")),
+                );
+              });
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(45),
+          child: Card(
+            //         shape: RoundedRectangleBorder(
+            // borderRadius: BorderRadius.only(
+            //   bottomRight: Radius.circular(10),
+            //   topRight: Radius.circular(10)),
+            // side: BorderSide(width: 5, color: Colors.blue)),
+            color: kPrimaryLightColor,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(32, 20, 16, 16),
+              child: Text(
+                usersDisplay[index].username,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
           ),
