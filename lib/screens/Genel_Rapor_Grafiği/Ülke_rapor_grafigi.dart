@@ -30,6 +30,25 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
     }
   }
 
+  getReportGrafik(int countryId) async {
+    var url = Uri.parse(
+        'https://crmsr.pen.com.tr/api/report-by-country/getallcountryreports');
+    final msg = jsonEncode({
+      "country_id": countryId,
+    });
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      // var decode = jsonDecode(response.body);
+      // statusCount = ulkelerFromJson(jsonEncode(decode["data"]));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +58,7 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
         statusCountDisplay = statusCount;
       });
     });
+    getReportGrafik(11);
   }
 
   @override
@@ -100,11 +120,12 @@ class _UlkeRaporGrafigiState extends State<UlkeRaporGrafigi> {
                           // ignore: deprecated_member_use
                           child: FlatButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            UlkeRaporlari()));
+                                getReportGrafik(selectedIndex);
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             UlkeRaporlari()));
                               },
                               padding: EdgeInsets.symmetric(
                                   vertical: 20, horizontal: 40),

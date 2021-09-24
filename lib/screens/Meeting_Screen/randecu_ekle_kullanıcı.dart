@@ -64,18 +64,24 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
     }
   }
 
-  addRandevu(int companyId, String date) async {
-    var headers = {'token': tokencomponent, 'Content-Type': 'application/json'};
-    var request = http.Request('POST',
-        Uri.parse('https://crmsr.pen.com.tr/api/company-interview/add'));
-    request.body =
-        json.encode({"company_id": companyId, "interview_date": date});
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
+  addRandevu(int companyId, String date, int ownerId) async {
+    var url = Uri.parse('https://crmsr.pen.com.tr/api/company-interview/add');
+    final msg = jsonEncode([
+      {
+        "company_id": companyId,
+        "interview_date": date,
+        "is_admin": admincontroller,
+        "owner_id": ownerId,
+        "is_active": true,
+        "is_archive": false
+      }
+    ]);
+    var response = await http.post(url,
+        body: msg,
+        headers: {'token': tokencomponent, 'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      print(response.body);
     } else {
       print(response.reasonPhrase);
     }
@@ -102,7 +108,7 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
   int selectedIndex2 = 0;
   bool selected = false;
   bool selected2 = false;
-  String? dateValue;
+  String dateValue = "2021-09-24T11:06:00.000";
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +136,8 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                               print('change $date in time zone ' +
                                   date.timeZoneOffset.inHours.toString());
                             }, onConfirm: (date) {
-                              dateValue = "${date.toIso8601String()}" + "Z";
-                              print('confirm $date');
+                              dateValue = date.toIso8601String();
+                              print(dateValue);
                             }, currentTime: DateTime.now());
                           },
                           icon: Icon(Icons.date_range)),
@@ -171,7 +177,7 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                     // ignore: deprecated_member_use
                     child: FlatButton(
                         onPressed: () async {
-                          addRandevu(selectedIndex, dateValue!)
+                          addRandevu(selectedIndex, dateValue, selectedIndex2)
                               .whenComplete(() {
                             showDialog(
                                 context: context,
