@@ -9,7 +9,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../constants.dart';
 import '../../wave_widget.dart';
-import 'sign_screen.dart';
 
 class Body extends StatefulWidget {
   Body({

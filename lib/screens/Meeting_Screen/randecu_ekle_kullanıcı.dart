@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:crm/screens/Companies_Screen/company_api.dart';
+import 'package:crm/screens/Home_Page/home.dart';
 import 'package:crm/screens/Meeting_Screen/Users_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../constants.dart';
 
@@ -179,21 +181,25 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                         onPressed: () async {
                           addRandevu(selectedIndex, dateValue, selectedIndex2)
                               .whenComplete(() {
-                            showDialog(
+                            AwesomeDialog(
                                 context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Başarılı"),
-                                    content: TextButton(
-                                      onPressed: () {
-                                        int counter = 0;
-                                        Navigator.of(context)
-                                            .popUntil((_) => counter++ >= 3);
-                                      },
-                                      child: Text("OK"),
-                                    ),
-                                  );
-                                });
+                                animType: AnimType.LEFTSLIDE,
+                                headerAnimationLoop: false,
+                                dialogType: DialogType.SUCCES,
+                                showCloseIcon: true,
+                                btnOkText: 'Tamam',
+                                title: 'Randevu Başarı ile Eklendi',
+                                btnOkOnPress: () {
+                                  int count = 0;
+                                  Navigator.of(context)
+                                      .popUntil((_) => count++ >= 2);
+                                },
+                                btnOkIcon: Icons.check_circle,
+                                onDissmissCallback: (type) {
+                                  debugPrint(
+                                      'Dialog Dissmiss from callback $type');
+                                })
+                              ..show();
                           });
                         },
                         padding:
