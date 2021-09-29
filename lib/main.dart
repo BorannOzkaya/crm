@@ -16,7 +16,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('A bg message just showed up: ${message.messageId}');
+  //print('A bg message just showed up: ${message.messageId}');
 }
 
 Future<void> main() async {
@@ -57,14 +57,18 @@ class _MyAppState extends State<MyApp> {
             notification.body,
             NotificationDetails(
               android: AndroidNotificationDetails(
-                  channel.id, channel.name, channel.description,
-                  color: Colors.blue, playSound: true),
+                channel.id,
+                channel.name,
+                channel.description,
+                color: Colors.blue,
+                playSound: true,
+              ),
             ));
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
+      //print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -85,19 +89,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void showNotification() {
-    setState(() {});
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Test",
-        "How you doin ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id, channel.name, channel.description,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true)));
-  }
+  // void showNotification() {
+  //   setState(() {});
+  //   flutterLocalNotificationsPlugin.show(
+  //       0,
+  //       "Test",
+  //       "How you doin ?",
+  //       NotificationDetails(
+  //           android: AndroidNotificationDetails(
+  //               channel.id, channel.name, channel.description,
+  //               importance: Importance.high,
+  //               color: Colors.blue,
+  //               playSound: true)));
+  // }
 
   @override
   Widget build(BuildContext context) {
