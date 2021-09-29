@@ -12,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'Company_call_api.dart';
 import 'status_count_api.dart';
 
@@ -26,10 +25,6 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  void configOneSignel() {
-    OneSignal.shared.setAppId('76279e92-68da-4c8e-9119-24ba97e6f22b');
-  }
-
   List<StatusDatum> statusCount = [];
   List<CaompanyCallDatum> companyCall = [];
   List<CaompanyCallDatum> companyCallDisplay = [];
@@ -160,7 +155,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           isLoading = true;
         });
       });
-      configOneSignel();
     }
 
     getTotalCall().whenComplete(() {
