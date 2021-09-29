@@ -89,20 +89,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // void showNotification() {
-  //   setState(() {});
-  //   flutterLocalNotificationsPlugin.show(
-  //       0,
-  //       "Test",
-  //       "How you doin ?",
-  //       NotificationDetails(
-  //           android: AndroidNotificationDetails(
-  //               channel.id, channel.name, channel.description,
-  //               importance: Importance.high,
-  //               color: Colors.blue,
-  //               playSound: true)));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
