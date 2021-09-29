@@ -16,7 +16,7 @@ class _UlkeRaporlariState extends State<UlkeRaporlari> {
       appBar: AppBar(
         backgroundColor: Color(0xFF284269),
         title: RichText(
-          text: TextSpan(
+          text: const TextSpan(
               text: 'PEN ',
               style: TextStyle(
                   color: kPrimaryColor,

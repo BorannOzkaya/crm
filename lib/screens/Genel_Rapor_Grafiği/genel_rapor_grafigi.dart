@@ -61,7 +61,7 @@ class _GenelRaporGrafigiState extends State<GenelRaporGrafigi> {
         appBar: AppBar(
           backgroundColor: Color(0xFF284269),
           title: RichText(
-            text: TextSpan(
+            text: const TextSpan(
                 text: 'PEN ',
                 style: TextStyle(
                     color: kPrimaryColor,
@@ -76,8 +76,8 @@ class _GenelRaporGrafigiState extends State<GenelRaporGrafigi> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 40),
+                const Padding(
+                  padding: EdgeInsets.only(top: 40),
                   child: Text(
                     "Genel - Grafik",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
