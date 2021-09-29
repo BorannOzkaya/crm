@@ -23,7 +23,7 @@ class _PaketlerScreenState extends State<PaketlerScreen> {
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
               children: [
-                TextSpan(text: 'CRM-SR', style: TextStyle(color: Colors.white))
+                TextSpan(text: 'CRM', style: TextStyle(color: Colors.white))
               ]),
         ),
       ),

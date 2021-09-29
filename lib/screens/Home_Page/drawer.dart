@@ -29,7 +29,7 @@ class HomeDrawer extends StatelessWidget {
               color: Color(0xFF284269),
             ),
             child: Text(
-              'CRM-SR',
+              'CRM',
               style: TextStyle(
                   fontSize: 25,
                   color: Colors.white,

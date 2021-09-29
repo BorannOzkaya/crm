@@ -24,7 +24,7 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
               children: [
-                TextSpan(text: 'CRM-SR', style: TextStyle(color: Colors.white))
+                TextSpan(text: 'CRM', style: TextStyle(color: Colors.white))
               ]),
         ),
       ),

@@ -98,15 +98,15 @@ class _BodyState extends State<Body> {
               Column(
                 children: [
                   RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       text: 'PEN',
                       style: TextStyle(
                           color: kPrimaryColor,
-                          fontSize: 40,
+                          fontSize: 37,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text('CRM-SR',
+                  const Text('CRM',
                       style: TextStyle(color: Colors.white, fontSize: 45))
                 ],
               ),
@@ -120,10 +120,11 @@ class _BodyState extends State<Body> {
                 size: size, usernameController: _usernameController),
             PasswordTextFormField(
                 size: size, passwordController: _passwordController),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
+            // ignore: sized_box_for_whitespace
             Container(
               width: size.width * 0.8,
               child: ClipRRect(
@@ -135,31 +136,44 @@ class _BodyState extends State<Body> {
                               _passwordController.text)
                           .whenComplete(() {
                         if (status == true) {
-                          AwesomeDialog(
-                              context: context,
-                              animType: AnimType.LEFTSLIDE,
-                              headerAnimationLoop: false,
-                              dialogType: DialogType.SUCCES,
-                              showCloseIcon: true,
-                              btnOkText: 'Tamam',
-                              title: 'Giriş Başarılı',
-                              btnOkOnPress: () {
-                                debugPrint('OnClcik');
-                              },
-                              btnOkIcon: Icons.check_circle,
-                              onDissmissCallback: (type) {
-                                debugPrint(
-                                    'Dialog Dissmiss from callback $type');
-                              })
-                            ..show().whenComplete(() {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return HomePage(
-                                  token: tokencomponent,
-                                );
-                              }));
+                          Future.delayed(const Duration(seconds: 1), () {
+                            setState(() {
+                              const AlertDialog(
+                                content: Center(
+                                    child: CircularProgressIndicator(
+                                  color: kPrimaryColor,
+                                )),
+                              );
                             });
+                          }).whenComplete(() {
+                            // ignore: avoid_single_cascade_in_expression_statements
+                            AwesomeDialog(
+                                context: context,
+                                animType: AnimType.LEFTSLIDE,
+                                headerAnimationLoop: true,
+                                dialogType: DialogType.SUCCES,
+                                showCloseIcon: true,
+                                btnOkText: 'Tamam',
+                                title: 'Giriş Başarılı',
+                                btnOkOnPress: () {
+                                  debugPrint('OnClcik');
+                                },
+                                btnOkIcon: Icons.check_circle,
+                                onDissmissCallback: (type) {
+                                  debugPrint(
+                                      'Dialog Dissmiss from callback $type');
+                                })
+                              ..show().whenComplete(() {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return HomePage(
+                                    token: tokencomponent,
+                                  );
+                                }));
+                              });
+                          });
                         } else {
+                          // ignore: avoid_single_cascade_in_expression_statements
                           AwesomeDialog(
                               context: context,
                               dialogType: DialogType.ERROR,
@@ -179,10 +193,13 @@ class _BodyState extends State<Body> {
                         }
                       });
                     },
+                    // ignore: prefer_const_constructors
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                    color: Color(0xFF284269),
+                    color: const Color(0xFF284269),
+                    // ignore: prefer_const_constructors
                     child: Text(
                       "Giriş Yap",
+                      // ignore: prefer_const_constructors
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -190,6 +207,7 @@ class _BodyState extends State<Body> {
                     )),
               ),
             ),
+            // ignore: prefer_const_constructors
             SizedBox(height: 20.0),
           ],
         ),
