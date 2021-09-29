@@ -6,6 +6,20 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+// buildscript {
+//     repositories {
+//         // ...
+//         maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
+//     }
+//     dependencies {
+//         // ...
+//         // OneSignal-Gradle-Plugin
+//         classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.6, 0.99.99]'
+//     }
+// }
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
