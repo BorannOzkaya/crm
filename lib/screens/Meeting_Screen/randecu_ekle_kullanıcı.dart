@@ -4,7 +4,7 @@ import 'package:crm/screens/Companies_Screen/company_api.dart';
 import 'package:crm/screens/Home_Page/home.dart';
 import 'package:crm/screens/Meeting_Screen/Users_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -133,14 +133,14 @@ class _RandevuEkleKullaniciState extends State<RandevuEkleKullanici> {
                       ),
                       IconButton(
                           onPressed: () {
-                            DatePicker.showDateTimePicker(context,
-                                showTitleActions: true, onChanged: (date) {
-                              print('change $date in time zone ' +
-                                  date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              dateValue = date.toIso8601String();
-                              print(dateValue);
-                            }, currentTime: DateTime.now());
+                            // DatePicker.showDateTimePicker(context,
+                            //     showTitleActions: true, onChanged: (date) {
+                            //   print('change $date in time zone ' +
+                            //       date.timeZoneOffset.inHours.toString());
+                            // }, onConfirm: (date) {
+                            //   dateValue = date.toIso8601String();
+                            //   print(dateValue);
+                            // }, currentTime: DateTime.now());
                           },
                           icon: Icon(Icons.date_range)),
                     ],
