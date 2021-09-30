@@ -39,7 +39,6 @@ dev_dependencies:
   url_launcher: ^6.0.10
   crypto: ^3.0.1
   provider: ^6.0.0
-  flutter_datetime_picker: ^1.5.1
   syncfusion_flutter_charts: ^19.2.59
   dio: ^4.0.0
   flutter_typeahead: ^3.2.0
